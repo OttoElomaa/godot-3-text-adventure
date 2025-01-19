@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Zone.gd" type="Script" id=2]
@@ -11,7 +11,8 @@
 [ext_resource path="res://Sprites/room-icon-basic.png" type="Texture" id=9]
 [ext_resource path="res://Sprites/battleback5.png" type="Texture" id=10]
 [ext_resource path="res://Resources/Enemies/Ghost.tres" type="Resource" id=11]
-[ext_resource path="res://Scenes/Battlers/Battler.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Battler.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Resources/Enemies/GhostHealer.tres" type="Resource" id=13]
 
 [node name="Zone" type="Control"]
 script = ExtResource( 2 )
@@ -103,7 +104,7 @@ battler_resource = ExtResource( 11 )
 battler_resource = ExtResource( 11 )
 
 [node name="Battler3" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
-battler_resource = ExtResource( 11 )
+battler_resource = ExtResource( 13 )
 
 [node name="Antechamber" parent="." instance=ExtResource( 4 )]
 margin_left = 943.0

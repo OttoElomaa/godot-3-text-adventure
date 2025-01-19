@@ -17,6 +17,8 @@ var skill_type = null
 var damage := 0
 var healing := 0
 
+var cooldown := 0
+
 var combat = null
 var battler = null
 
@@ -51,6 +53,7 @@ func setup(resource):
 
 	damage = resource.damage
 	healing = resource.healing
+	cooldown = resource.cooldown
 
 
 func activate(actor):
@@ -80,6 +83,10 @@ func get_target_group(character):
 		else:
 			pass
 			
+
+func handle_skill_use_info():
+	
+	combat.handle_combat_output("\n" + battler.entity_name + " uses " + skill_name + "!", Color.white)
 			
 
 func deal_damage(target):
@@ -103,7 +110,15 @@ func heal(target):
 	if battler.is_enemy:
 		color = Color.cornflower
 	
+	var heal_diff = target.stats.max_health - target.stats.health
+	if target.stats.health + healing > target.stats.max_health:
+		healing = heal_diff
+		
 	target.stats.health += healing
+	
+	
+	
+	
 	
 	var text = "%s is healed by %d!" % [target.entity_name, healing]
 	combat.handle_combat_output(text, color)

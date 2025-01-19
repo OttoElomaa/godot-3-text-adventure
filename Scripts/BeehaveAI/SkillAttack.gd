@@ -5,6 +5,8 @@ var actor = null
 func tick(actor, blackboard):
 	
 	self.actor = actor
+	actor.handle_skill_use_info()
+	
 	
 	match actor.skill_type:
 		
@@ -13,6 +15,11 @@ func tick(actor, blackboard):
 	
 		actor.enum_skill_types.BasicHeal:
 			basic_heal()
+	
+	
+	#### PUT Skill on COOLDOWN IF NECESSARY (Value 0 Means NO COOLDOWN)		
+	if actor.cooldown > 0:
+		actor.battler.put_skill_on_cooldown(actor)
 
 
 

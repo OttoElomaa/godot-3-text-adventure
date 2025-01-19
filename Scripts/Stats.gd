@@ -3,7 +3,9 @@ extends Node
 
 
 var health = 100
+var max_health = 10000
 var mana = 100
+var max_mana = 10000
 
 var armor = 100
 var attack_power = 100

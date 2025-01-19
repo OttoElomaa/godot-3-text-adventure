@@ -106,7 +106,7 @@ func setup_and_fight(room):
 	for enemy in enemy_group:
 		dict_enemies_and_sprites[enemy] = sprites[sprite_count]
 		sprites[sprite_count].texture = enemy.texture.texture
-		sprites[sprite_count].scale = Vector2(1.3, 1.3)
+		sprites[sprite_count].scale = Vector2(1.8, 1.8)
 		sprites[sprite_count].show()
 		sprite_count += 1
 		
@@ -121,13 +121,22 @@ func setup_and_fight(room):
 	for battler in enemies.get_children():
 		battlers.append(battler)
 	
+	fight_battle()
+
+
+
+func fight_battle():
 			
 	#### TURN SYSTEM
 	while combat_ended == false:
 		
+		#### HANDLE STATUS AND COOLDOWNS
+		for battler in battlers:
+			if combat_ended == false:
+				battler.handle_counters()
+			
 		#### LOOP through list of all BATTLERS
 		for battler in battlers:
-			
 			if combat_ended == false:
 				
 				current_character = battler # WHAAATTTT
@@ -135,7 +144,10 @@ func setup_and_fight(room):
 				
 				if not is_enemy:
 					yield(self, "player_character_finished_turn")
-			
+				
+				#### ATTEMPT TO FIX COUNTER BUG WITH TIMER
+				yield(get_tree().create_timer(0.01), "timeout")
+				
 				for battler2 in battlers:
 					battler2.update_resource_bars()
 				
@@ -145,16 +157,17 @@ func setup_and_fight(room):
 		
 		handle_combat_output("_____", Color.wheat)
 	
+	
 	#### WHEN Combat ENDS	
 	combat_state = States.VICTORY
 	handle_combat_output("\nYou are victorious!", Color.crimson)
 	handle_combat_output("Press F to end combat", Color.white)
 
-	
+
 
 func play_battler(battler: Battler, battlers: Array) -> bool:
 	
-	handle_combat_output("\n" + battler.entity_name + " takes its turn!", Color.white)
+	#handle_combat_output("\n" + battler.entity_name + " takes its turn!", Color.white)
 	
 	var is_enemy := false
 	
@@ -191,6 +204,10 @@ func handle_combat_output(text, color) -> void:
 func handle_combat_info(text, color) -> void:
 	
 	info_rows.wipe_history()
+	info_rows.handle_adding_message(text, color)
+
+func add_combat_info_row(text, color) -> void:
+
 	info_rows.handle_adding_message(text, color)
 
 
@@ -257,11 +274,9 @@ func process_command_combat():
 	#### SETS Combat State as SKILLS, WAITS for input	
 	elif check_key("combat_skills"):
 		
-		#### HANDLE_INFO function calls wipe on the info screen to clear it
-		handle_combat_info("Use Skills!", Color.white)
-		info_rows.handle_adding_message("Current character: " + current_character.entity_name, Color.white)
-		
-		info_rows.handle_adding_message(current_character.show_skills(), Color.white)
+		show_skill_use_info()
+			
+		#add_combat_info_row(current_character.show_skills(), Color.white)
 		
 		combat_state = States.SKILLS
 		input_is_ongoing = true
@@ -277,7 +292,10 @@ func process_command_combat():
 		
 	return "It's combat time"
 
+
+
 	
+
 
 func process_command_items():
 	
@@ -290,24 +308,34 @@ func process_command_skills():
 	
 	var skills_count = current_character.skills.get_child_count()
 	var selected_num = null
+	
+	var curr = current_character
+	var skill = null
 	var valid_input_found := false
+	
+	var all_skills: Array = curr.basic_skills.duplicate()
+	all_skills.append_array(curr.special_skills)
 	
 	#### CHOOSE Skill via INPUT: MATCH INPUT key to SKILL
 	for key in dict_inputs.keys():
-		
 		debug_key1 = key
+		
+		#### IF KEY FOUND, AND SKILL IS WITHIN RANGE
 		if check_key(key) and skills_count >= dict_inputs[key]:
 			selected_num = int(key) - 1
-			valid_input_found = true
+			
+			skill = all_skills[selected_num]
+			
+			if not curr.check_for_cooldown(skill):
+				valid_input_found = true
 	
 	if not valid_input_found:
 		return
 	
 	#### CHOOSE TARGET FOR SKILL USE
-	current_input_num = selected_num
+	#current_input_num = selected_num
 
-	var curr = current_character
-	var skill = curr.skills.get_child(current_input_num)
+	
 	
 	curr.target_group = skill.get_target_group(curr)
 	show_target_choice_info(curr, curr.target_group,skill)	
@@ -321,6 +349,30 @@ func process_command_skills():
 	current_character.skills.get_child(selected_num).activate(current_character)
 	call_deferred("end_player_action")
 
+
+
+func show_skill_use_info():
+	
+	#### HANDLE_INFO function calls wipe on the info screen to clear it
+	handle_combat_info("Use Skills!", Color.white)
+	add_combat_info_row("Current character: %s \n" % current_character.entity_name, Color.white)
+	
+	var count = 1
+	
+	for skill in current_character.basic_skills:
+		add_combat_info_row("%d: %s \n" % [count, skill.skill_name], Color.white)
+		count += 1
+		
+	for skill in current_character.special_skills:
+		
+		if current_character.check_for_cooldown(skill):
+			var duration = current_character.get_cooldown_duration(skill)
+			add_combat_info_row("%d: %s \n(CD: %d) \n" % [count, skill.skill_name, duration], Color.darkgray)
+			count += 1
+		else:
+			add_combat_info_row("%d: %s \n" % [count, skill.skill_name], Color.white)
+			count += 1
+	
 
 
 func show_target_choice_info(battler, skill, targetgroup):

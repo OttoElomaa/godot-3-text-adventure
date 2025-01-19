@@ -327,12 +327,13 @@ func hail(input) -> String:
 	var green_c = Color.lightgreen
 		
 	var character = current_room.room_character
-	var first_name = character.npc_name
+	var first_name = null
 	
 	if character == null:
 		return "There's nobody here to talk to."
 		
 	else:
+		first_name = character.npc_name
 		
 		visual_panel.display_alt_panel()
 		visual_panel.display_dialogue_screen(current_room)

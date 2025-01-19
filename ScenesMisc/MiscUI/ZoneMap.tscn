@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/ZoneMap.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/knight-darkbackground-32px.png" type="Texture" id=2]
-[ext_resource path="res://Sprites/room-icon-background.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/room-icon-background-v2.png" type="Texture" id=3]
 
 [node name="ZoneMap" type="Node2D"]
 script = ExtResource( 1 )

@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Enemies/BaseBattler.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/enemy-ghost-basic.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/enemy-ghost-healer.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
 sprite = ExtResource( 2 )
-entity_name = "Ghost"
+entity_name = "Ghost Healer"
 is_enemy = true
 mob_type = 0
-mob_sub_type = 0
+mob_sub_type = 1
 health = 100
 mana = 50
 armor = 100

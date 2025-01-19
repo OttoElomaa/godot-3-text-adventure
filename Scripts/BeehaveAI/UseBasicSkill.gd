@@ -9,8 +9,8 @@ func tick(actor, blackboard):
 	#combat.handle_combat_output(actor.entity_name + " takes its turn!", Color.white)
 	
 	#### SKILLS have their own Behavior Tree!
-	for skill in actor.skills.get_children():
-		skill.activate(actor)
+	for skill in actor.basic_skills:
+		blackboard.set("skill_to_use", skill)
 		return SUCCESS
 	
 	return FAILURE

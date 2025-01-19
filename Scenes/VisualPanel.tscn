@@ -17,15 +17,14 @@ custom_constants/separation = 15
 script = ExtResource( 2 )
 
 [node name="TopPanel" type="PanelContainer" parent="."]
-visible = false
 margin_right = 630.0
-margin_bottom = 560.0
+margin_bottom = 356.0
 size_flags_vertical = 3
 custom_styles/panel = ExtResource( 3 )
 
 [node name="Margins" type="MarginContainer" parent="TopPanel"]
 margin_right = 630.0
-margin_bottom = 560.0
+margin_bottom = 356.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
@@ -35,12 +34,12 @@ custom_constants/margin_bottom = 15
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 620.0
-margin_bottom = 545.0
+margin_bottom = 341.0
 custom_constants/separation = 10
 
 [node name="ArtVBox" type="VBoxContainer" parent="TopPanel/Margins/HBox"]
 margin_right = 300.0
-margin_bottom = 535.0
+margin_bottom = 331.0
 size_flags_horizontal = 3
 
 [node name="RoomLabel" type="Label" parent="TopPanel/Margins/HBox/ArtVBox"]
@@ -52,14 +51,13 @@ text = "RoomNameLabel"
 [node name="Center" type="CenterContainer" parent="TopPanel/Margins/HBox/ArtVBox"]
 margin_top = 31.0
 margin_right = 300.0
-margin_bottom = 535.0
+margin_bottom = 331.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ViewportCont" type="ViewportContainer" parent="TopPanel/Margins/HBox/ArtVBox/Center"]
-margin_top = 102.0
 margin_right = 300.0
-margin_bottom = 402.0
+margin_bottom = 300.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -68,7 +66,7 @@ size_flags_vertical = 3
 size = Vector2( 300, 300 )
 handle_input_locally = false
 disable_3d = true
-render_target_update_mode = 0
+render_target_update_mode = 3
 gui_disable_input = true
 
 [node name="RoomSprite" parent="TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport" instance=ExtResource( 1 )]
@@ -76,7 +74,7 @@ gui_disable_input = true
 [node name="MapVbox" type="VBoxContainer" parent="TopPanel/Margins/HBox"]
 margin_left = 310.0
 margin_right = 610.0
-margin_bottom = 535.0
+margin_bottom = 331.0
 size_flags_horizontal = 3
 
 [node name="ZoneLabel" type="Label" parent="TopPanel/Margins/HBox/MapVbox"]
@@ -88,14 +86,13 @@ text = "Zone: ZoneNameHere"
 [node name="Center" type="CenterContainer" parent="TopPanel/Margins/HBox/MapVbox"]
 margin_top = 31.0
 margin_right = 300.0
-margin_bottom = 535.0
+margin_bottom = 331.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ViewportCont" type="ViewportContainer" parent="TopPanel/Margins/HBox/MapVbox/Center"]
-margin_top = 102.0
 margin_right = 300.0
-margin_bottom = 402.0
+margin_bottom = 300.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -104,13 +101,12 @@ size_flags_vertical = 3
 size = Vector2( 300, 300 )
 handle_input_locally = false
 disable_3d = true
-render_target_update_mode = 0
+render_target_update_mode = 3
 gui_disable_input = true
 
 [node name="ZoneMap" parent="TopPanel/Margins/HBox/MapVbox/Center/ViewportCont/Viewport" instance=ExtResource( 6 )]
 
 [node name="BottomPanel" type="PanelContainer" parent="."]
-visible = false
 margin_top = 371.0
 margin_right = 630.0
 margin_bottom = 560.0
@@ -142,8 +138,10 @@ margin_right = 620.0
 margin_bottom = 179.0
 
 [node name="AltPanel" type="PanelContainer" parent="."]
-margin_right = 504.0
-margin_bottom = 560.0
+visible = false
+margin_top = 371.0
+margin_right = 630.0
+margin_bottom = 733.0
 size_flags_vertical = 3
 custom_styles/panel = ExtResource( 3 )
 
@@ -163,26 +161,26 @@ custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
 
 [node name="DialogueScreen" type="PanelContainer" parent="AltPanel"]
-margin_right = 504.0
-margin_bottom = 560.0
+margin_right = 630.0
+margin_bottom = 362.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="HBox" type="HBoxContainer" parent="AltPanel/DialogueScreen"]
-margin_right = 504.0
-margin_bottom = 560.0
+margin_right = 630.0
+margin_bottom = 362.0
 
 [node name="Scroll" type="ScrollContainer" parent="AltPanel/DialogueScreen/HBox"]
 margin_right = 200.0
-margin_bottom = 560.0
+margin_bottom = 362.0
 rect_min_size = Vector2( 200, 200 )
 
 [node name="KeywordRows" parent="AltPanel/DialogueScreen/HBox/Scroll" instance=ExtResource( 5 )]
-margin_bottom = 560.0
+margin_bottom = 362.0
 
 [node name="CharacterVBox" type="VBoxContainer" parent="AltPanel/DialogueScreen/HBox"]
 margin_left = 204.0
 margin_right = 504.0
-margin_bottom = 560.0
+margin_bottom = 362.0
 
 [node name="ViewportCont" type="ViewportContainer" parent="AltPanel/DialogueScreen/HBox/CharacterVBox"]
 margin_right = 300.0
@@ -191,7 +189,7 @@ margin_bottom = 300.0
 [node name="Viewport" type="Viewport" parent="AltPanel/DialogueScreen/HBox/CharacterVBox/ViewportCont"]
 size = Vector2( 300, 300 )
 handle_input_locally = false
-render_target_update_mode = 3
+render_target_update_mode = 0
 
 [node name="CharNameLabel" type="Label" parent="AltPanel/DialogueScreen/HBox/CharacterVBox"]
 margin_top = 304.0

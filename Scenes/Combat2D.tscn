@@ -12,21 +12,20 @@ texture = ExtResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 1.5, 1.5 )
 
 [node name="Enemies2D" type="Node2D" parent="."]
 
 [node name="EnemySprite1" type="Sprite" parent="Enemies2D"]
 texture = ExtResource( 2 )
-offset = Vector2( 0, 100 )
+offset = Vector2( 0, 50 )
 
 [node name="EnemySprite2" type="Sprite" parent="Enemies2D"]
 texture = ExtResource( 2 )
-offset = Vector2( -230, 100 )
+offset = Vector2( -150, 50 )
 
 [node name="EnemySprite3" type="Sprite" parent="Enemies2D"]
 texture = ExtResource( 2 )
-offset = Vector2( 230, 100 )
+offset = Vector2( 150, 50 )
 
 [node name="EnemySprite4" type="Sprite" parent="Enemies2D"]
 texture = ExtResource( 2 )
@@ -34,8 +33,8 @@ offset = Vector2( 0, -50 )
 
 [node name="EnemySprite5" type="Sprite" parent="Enemies2D"]
 texture = ExtResource( 2 )
-offset = Vector2( -300, -50 )
+offset = Vector2( -250, -50 )
 
 [node name="EnemySprite6" type="Sprite" parent="Enemies2D"]
 texture = ExtResource( 2 )
-offset = Vector2( 300, -50 )
+offset = Vector2( 250, -50 )

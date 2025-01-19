@@ -13,10 +13,15 @@ onready var SkillFirstAid = preload("res://Resources/Skills/FirstAid.tres")
 
 
 export (Resource) var battler_resource = null
+onready var texture := $Texture
 
 onready var stats := $Stats
 onready var skills := $Skills
-onready var texture := $Texture
+var special_skills := []
+var basic_skills := []
+
+
+
 
 var battler_info_panel : Control = null
 
@@ -50,24 +55,33 @@ func check_stunned():
 	
 func set_stats_from_resource():
 	
+	#### SETUP own components
+	$StatusHandler.setup()
+	combat = DataScene.get_combat_screen()
+	
 	#### Get RESOURCE
 	var stat_resource : Resource = null
 	
 	if battler_resource != null:
 		stat_resource = battler_resource
 			
-	#### Stuff in SELF
+	#### READ FROM RESOURCE - Stuff in SELF
 	
 	entity_name = stat_resource.entity_name
 	is_enemy = stat_resource.is_enemy
+	texture.texture = stat_resource.sprite
 	
 	#### Stuff in Self.STATS node	
 	stats.health = stat_resource.health
-	stats.mana = 100
-	stats.armor = 100
-	stats.attack_power = 100
-	stats.spell_power = 100
-	stats.poise = 100
+	stats.mana = stat_resource.mana
+	
+	stats.max_health = stats.health
+	stats.max_mana = stats.mana
+	
+	stats.armor = stat_resource.armor
+	stats.attack_power = stat_resource.attack_power
+	stats.spell_power = stat_resource.spell_power
+	stats.poise = stat_resource.poise
 	
 	#### SET SKILLS based on ENEMY TYPE
 	var mob_type = stat_resource.mob_type
@@ -90,60 +104,78 @@ func set_skills(mob_type, mob_sub_type, stat_resource):
 			
 		type_enum.Player:
 			create_skill_node(SkillStrike)
-			create_skill_node(SkillStrongStrike)
-			create_skill_node(SkillFirstAid)
+			create_special_skill(SkillStrongStrike)
+			create_special_skill(SkillFirstAid)
 	
 	
 	match mob_sub_type:
 		
-		sub_type_enum.Druid:
-			pass
-	
+		sub_type_enum.Healer:
+			create_special_skill(SkillFirstAid)
+			create_special_skill(SkillStrongStrike)
 		
 		
-
 func create_skill_node(resource):
 	
 	var skill = SkillScene.instance()
 	skill.setup(resource)
 	skills.add_child(skill)
+	#### Diff:
+	basic_skills.append(skill)
 
-
-
-func show_skills():
+func create_special_skill(resource):
 	
-	var return_str = ""
-	var count = 1
-	
-	for skill in skills.get_children():	
-		return_str += "\n %d: %s \n" % [count, skill.skill_name]
-		count += 1
-		
-	return return_str
-		
+	var skill = SkillScene.instance()
+	skill.setup(resource)
+	skills.add_child(skill)
+	#### Diff:
+	special_skills.append(skill)
+
+
 
 #### Here: Distinction BETWEEN Player and Not Player (Enemy)
 func play_turn():
 	
-	combat = DataScene.get_combat_screen()
-	
-	if is_enemy == true:
-		target_group = combat.ally_group	
-	else:
-		target_group = combat.enemy_group
-	
 	$BeehaveRoot.tick(1)
-	emit_signal("battler_finished_turn")
 	return is_enemy		
-	
 
-func update_resource_bars():
+
+func put_skill_on_cooldown(skill: Node):
 	
-	battler_info_panel.update_resource_bars()
+	$StatusHandler.add_cooldown_counter(skill)
+
+
+
+func handle_counters():
 	
+	$StatusHandler.play_counters_turn()
+
+
+
+#### CHECKING COOLDOWN	
+func check_for_cooldown(skill: Node):
 	
-#func reduce_health(damage):
-	#pass
+	for counter in $StatusHandler.cooldown_counters:
+		if is_instance_valid(counter):
+			
+			if counter.skill.skill_name == skill.skill_name:
+				return true
+			
+	return false
+
+
+func get_cooldown_duration(skill: Node) -> int: 
+	
+	for counter in $StatusHandler.cooldown_counters:
+		if is_instance_valid(counter):
+			
+			if counter.skill.skill_name == skill.skill_name:
+				return counter.counter_turns
+	
+	return 0
+
+
+
 
 #### YOU TAKE DAMAGE
 func handle_damage():
@@ -152,21 +184,30 @@ func handle_damage():
 		remove_battler()	
 
 
+
 #### Basically, BATTLER is KILLED for some reason	
 func remove_battler():
 	
 	var combat = DataScene.get_combat_screen()
 	
-	combat.enemy_group.erase(self)
+	
+	
 	combat.battlers.erase(self)
-	combat.dead_enemy_list.append(self)
 	
 	texture.hide()
-	combat.dict_enemies_and_sprites[self].hide()
+	
+	if is_enemy:
+		combat.dict_enemies_and_sprites[self].hide()
+		combat.enemy_group.erase(self)
+		combat.dead_enemy_list.append(self)
+		
 	battler_info_panel.queue_free()
 	
+
 	
+func update_resource_bars():
 	
+	battler_info_panel.update_resource_bars()	
 	
 	
 	

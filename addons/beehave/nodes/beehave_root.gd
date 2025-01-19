@@ -40,7 +40,7 @@ func tick(delta):
 	blackboard.set("delta", delta)
 
 	#### TEXT ADVENTURE GAME'S BATTLER FUNCTION
-	#blackboard.set("is_player", false)
+	blackboard.set("skill_to_use", null)
 	var status = self.get_child(0).tick(actor, blackboard)
 	
 	

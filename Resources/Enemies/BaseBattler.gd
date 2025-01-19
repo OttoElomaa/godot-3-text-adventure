@@ -2,12 +2,12 @@ extends Resource
 
 enum MobTypes {
 	
-	BasicMelee, Player, BasicRanged, Healer
+	BasicMelee, Player, BasicRanged, 
 }
 
 enum MobSubTypes {
 	
-	None, Vermin, Druid
+	None, Healer, Vermin, Druid
 }
 
 export (Resource) var sprite = load("res://Sprites/14b.png")
