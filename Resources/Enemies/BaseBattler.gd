@@ -1,8 +1,21 @@
 extends Resource
 
+enum MobTypes {
+	
+	BasicMelee, Player, BasicRanged, Healer
+}
+
+enum MobSubTypes {
+	
+	None, Vermin, Druid
+}
 
 export (Resource) var sprite = load("res://Sprites/14b.png")
 export (String) var entity_name = ""
+export (bool) var is_enemy = true
+
+export (MobTypes) var mob_type = MobTypes.BasicMelee
+export (MobSubTypes) var mob_sub_type = MobSubTypes.None
 
 export (int) var health = 100
 export (int) var mana = 100

@@ -6,7 +6,7 @@ var starting_room = null
 var current_zone = null
 var current_room = null
 
-onready var player = $Party/Player
+onready var player = $Inventory
 onready var command_parser = $CommandParser
 onready var text_window = $MainPanel/MarginContainer/Horizontal/TextWindow
 
@@ -19,12 +19,10 @@ func _ready():
 	#### I reckoned, Zone is just abstraction of some Rooms -> same as ZoneHandler would be
 	current_zone = $Zone
 	starting_room = current_zone.get_node("Room")
-	current_room = starting_room
 	
 	hide_combat_screen()
 	
 	var test_name = starting_room.room_name
-	
 	
 	#### Custom SETUP functions
 	command_parser.setup(starting_room, player)

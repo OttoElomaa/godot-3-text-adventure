@@ -4,8 +4,14 @@ class_name Battler
 
 signal battler_finished_turn
 
+onready var SkillScene = preload("res://Scenes/Skill.tscn")
 
-export (Types.EnemyTypes) var enemy_type = Types.EnemyTypes.GHOST;
+onready var SkillStrike = preload("res://Resources/Skills/Strike.tres")
+onready var SkillStrongStrike = preload("res://Resources/Skills/StrongStrike.tres")
+onready var SkillFirstAid = preload("res://Resources/Skills/FirstAid.tres")
+
+
+
 export (Resource) var battler_resource = null
 
 onready var stats := $Stats
@@ -16,9 +22,15 @@ var battler_info_panel : Control = null
 
 
 export (String) var entity_name = "Un-defined Enemy"
-export (bool) var is_enemy = true
+var is_enemy = true
+#export (bool) var is_enemy = true
 
 var is_stunned := false
+
+var combat = null
+var target_group = null
+var target = null
+
 
 
 func _ready():
@@ -41,18 +53,13 @@ func set_stats_from_resource():
 	#### Get RESOURCE
 	var stat_resource : Resource = null
 	
-	match enemy_type:
-		
-		Types.EnemyTypes.GHOST:
-			stat_resource = load("res://Resources/Enemies/Ghost.tres")
-	
 	if battler_resource != null:
 		stat_resource = battler_resource
 			
 	#### Stuff in SELF
-	#if is_enemy:
-	entity_name = stat_resource.entity_name
 	
+	entity_name = stat_resource.entity_name
+	is_enemy = stat_resource.is_enemy
 	
 	#### Stuff in Self.STATS node	
 	stats.health = stat_resource.health
@@ -61,7 +68,46 @@ func set_stats_from_resource():
 	stats.attack_power = 100
 	stats.spell_power = 100
 	stats.poise = 100
+	
+	#### SET SKILLS based on ENEMY TYPE
+	var mob_type = stat_resource.mob_type
+	var mob_sub_type = stat_resource.mob_sub_type
+	set_skills(mob_type, mob_sub_type, stat_resource)
 			
+
+func set_skills(mob_type, mob_sub_type, stat_resource):
+	
+	# Types: BasicMelee, BasicRanged, Healer
+	# SubTypes: None, Vermin, Druid
+	
+	var type_enum = stat_resource.MobTypes
+	var sub_type_enum = stat_resource.MobSubTypes
+	
+	match mob_type:
+		
+		type_enum.BasicMelee:
+			create_skill_node(SkillStrike)
+			
+		type_enum.Player:
+			create_skill_node(SkillStrike)
+			create_skill_node(SkillStrongStrike)
+			create_skill_node(SkillFirstAid)
+	
+	
+	match mob_sub_type:
+		
+		sub_type_enum.Druid:
+			pass
+	
+		
+		
+
+func create_skill_node(resource):
+	
+	var skill = SkillScene.instance()
+	skill.setup(resource)
+	skills.add_child(skill)
+
 
 
 func show_skills():
@@ -79,12 +125,16 @@ func show_skills():
 #### Here: Distinction BETWEEN Player and Not Player (Enemy)
 func play_turn():
 	
-	if self.is_in_group("player"):
-		pass
+	combat = DataScene.get_combat_screen()
 	
+	if is_enemy == true:
+		target_group = combat.ally_group	
 	else:
-		$BeehaveRoot.tick(1)
-		emit_signal("battler_finished_turn")		
+		target_group = combat.enemy_group
+	
+	$BeehaveRoot.tick(1)
+	emit_signal("battler_finished_turn")
+	return is_enemy		
 	
 
 func update_resource_bars():
@@ -112,6 +162,7 @@ func remove_battler():
 	combat.dead_enemy_list.append(self)
 	
 	texture.hide()
+	combat.dict_enemies_and_sprites[self].hide()
 	battler_info_panel.queue_free()
 	
 	

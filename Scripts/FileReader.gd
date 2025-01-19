@@ -49,7 +49,7 @@ func read_items_file_to_list() -> Array:
 	return items
 	
 
-func get_item_stats_by_id(id: String) -> Node:
+func get_item_by_id(id: String) -> Node:
 	
 	var item_scenes = read_items_file_to_list()
 	

@@ -7,7 +7,7 @@
 [node name="Row" type="VBoxContainer"]
 margin_right = 472.0
 margin_bottom = 55.0
-custom_constants/separation = 2
+custom_constants/separation = 3
 script = ExtResource( 3 )
 
 [node name="Input" type="Label" parent="."]
@@ -18,6 +18,6 @@ custom_fonts/font = ExtResource( 1 )
 text = "input text"
 
 [node name="OutputMessage" parent="." instance=ExtResource( 2 )]
-margin_top = 29.0
-margin_bottom = 56.0
+margin_top = 30.0
+margin_bottom = 57.0
 size_flags_horizontal = 1

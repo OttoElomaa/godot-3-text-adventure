@@ -93,19 +93,22 @@ func set_zone_label(text):
 	
 
 #### CALLED in ROOM Scene
-func set_exits_list(list):
+func set_exits_list(exits, room):
 	
 	var exits_panel = $BottomPanel/Margins/HBox/ExitsRows
+	var color = Color.whitesmoke
 	
 	exits_panel.wipe_history()
 	
-	var counter = 0
-	for item in list:
-		var color = Color.whitesmoke
-		if counter == 0:
-			color = Color.mediumpurple
-		exits_panel.handle_adding_message(item, color)
-		counter += 1
+		
+	exits_panel.handle_adding_message("Exits: ", Color.mediumpurple)
+	for key in exits.keys():
+		if exits[key].room_1 == room:
+			if exits[key].is_side_1_locked == true:
+				color = Color.indianred
+		
+		exits_panel.handle_adding_message(exits[key].exit_type + " " + key + ".", color)
+		
 		
 
 

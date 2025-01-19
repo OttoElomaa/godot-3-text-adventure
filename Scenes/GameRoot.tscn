@@ -5,7 +5,7 @@
 [ext_resource path="res://Scenes/CommandParser.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/GameRoot.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Zones/Zone.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Inventory.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Zones/HamletZone.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/CombatScreen.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/Battlers/Battler.tscn" type="PackedScene" id=9]
@@ -26,14 +26,13 @@ script = ExtResource( 4 )
 
 [node name="Party" type="Node" parent="."]
 
-[node name="Player" parent="Party" instance=ExtResource( 6 )]
-battler_resource = ExtResource( 10 )
-entity_name = "Player"
-
 [node name="Dog" parent="Party" instance=ExtResource( 9 )]
 battler_resource = ExtResource( 11 )
 entity_name = "Dog"
-is_enemy = false
+
+[node name="Player" parent="Party" instance=ExtResource( 9 )]
+battler_resource = ExtResource( 10 )
+entity_name = "PlayerGuy"
 
 [node name="Zone" parent="." instance=ExtResource( 5 )]
 anchor_left = -0.059
@@ -41,12 +40,14 @@ anchor_top = -1.09
 anchor_right = -0.059
 anchor_bottom = -1.09
 margin_left = 176.7
-margin_top = -328.0
+margin_top = -1328.0
 margin_right = 176.7
-margin_bottom = -328.0
+margin_bottom = -1328.0
 
 [node name="HamletZone" parent="." instance=ExtResource( 7 )]
+margin_left = 3000.0
 margin_top = -1500.0
+margin_right = 3000.0
 margin_bottom = -1500.0
 
 [node name="MainPanel" type="PanelContainer" parent="."]
@@ -84,3 +85,5 @@ visible = false
 [node name="FileReader" parent="." instance=ExtResource( 12 )]
 
 [node name="CommandParser" parent="." instance=ExtResource( 3 )]
+
+[node name="Inventory" parent="." instance=ExtResource( 6 )]

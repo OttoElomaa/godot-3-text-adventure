@@ -15,7 +15,12 @@ var current_zone = null
 var current_room = null
 var current_dialogue_npc = null
 
+var first_word = ""
+var second_word = ""
 
+var white_c = Color.white
+var yellow_c = Color.burlywood
+var green_c = Color.lightgreen
 
 
 #### This is CALLED Where??
@@ -27,6 +32,7 @@ func setup(starting_room, player):
 	
 	self.player = player
 	current_room = starting_room
+	change_room(current_room)
 	
 	var game_root = get_tree().root.get_node("GameRoot")
 	current_zone = game_root.get_node("Zone") 
@@ -41,10 +47,30 @@ func setup(starting_room, player):
 	
 ###################################################################################################	
 
+func split_word(input):
+	
+	#### Delineator, allow_false, max split
+	var words = input.split(" ",false)
+	
+	#### ERROR
+	if words.size() == 0:
+		return "Deez nuts"
+	
+	first_word = words[0].to_lower()
+	second_word = ""
+	
+	if words.size() >= 2:
+		second_word = words[1].to_lower()
+
+
 
 func process_command( input:String ) -> String:
 	
 	var response = ""
+	
+	#### RESET the 2 input words
+	first_word = ""
+	second_word = ""
 	
 	match game_state:
 		
@@ -70,19 +96,8 @@ func process_command_explore(input):
 	
 	var response = ""
 	
+	split_word(input)
 	
-	#### Delineator, allow_false, max split
-	var words = input.split(" ",false)
-	
-	#### ERROR
-	if words.size() == 0:
-		return "Deez nuts"
-	
-	var first_word = words[0].to_lower()
-	var second_word = ""
-	
-	if words.size() >= 2:
-		second_word = words[1].to_lower()
 	
 	if not first_word in ["help", "h"]:
 		visual_panel.hide_help()
@@ -123,12 +138,12 @@ func process_command_explore(input):
 
 func process_command_dialogue(input: String) -> String:
 	
-	var white_c = Color.white
-	var yellow_c = Color.burlywood
-	var green_c = Color.lightgreen
+	
 	var first_name = current_dialogue_npc.npc_name.split(" ")[0]
 	
-	match input:
+	split_word(input)
+	
+	match first_word:
 		
 	###############################
 		#### UNIVERSAL KEYWORDS
@@ -149,12 +164,8 @@ func process_command_dialogue(input: String) -> String:
 		
 		"give":
 			
-			if current_dialogue_npc.can_receive:
-				text_window.create_custom_row(input, first_name + ": Yes, I need an item. Can you Give it to me?")
-				text_window.handle_adding_message(current_dialogue_npc.give_dialogue, white_c)
-				
-			else:
-				text_window.create_custom_row(input, first_name + ": No, I don't need anything you can Give me.")
+			give(input, second_word)
+			
 			return ""
 			
 		"grant":
@@ -222,6 +233,50 @@ func process_command_dialogue(input: String) -> String:
 				return ""
 					
 	return "Among us"
+
+
+func give(input, second_word):
+	
+	var inv = player.get_inventory()
+	var item = null
+	var npc = current_dialogue_npc
+	var first_name = npc.npc_name.split(" ")[0]
+	
+	if npc.can_receive and npc.can_grant:
+		
+		match second_word:		
+			"":
+				text_window.create_custom_row(input, first_name + ": Yes, I need an item. Can you Give it to me?")
+				text_window.handle_adding_message(current_dialogue_npc.give_dialogue, white_c)
+				text_window.handle_adding_message("They want this item: " + current_dialogue_npc.receive_item_id, yellow_c)
+		
+			current_dialogue_npc.receive_item_id:
+				item = look_for_item_in_list(inv, second_word)
+				if item == null:
+					text_window.create_custom_row(input, "Yes, that's the item. You don't have it, though.")
+				
+				else:
+					text_window.create_custom_row(input, first_name + ": You have the item I want!")
+					text_window.handle_adding_message(current_dialogue_npc.post_quest_dialogue, white_c)
+					
+					text_window.handle_adding_message("You give the " + item.item_name + " away!", yellow_c)
+					player.drop_item(item)
+					
+					var grant_item = DataScene.get_file_reader().get_item_by_id(npc.grant_item_id)
+					player.take_item(grant_item)
+			_:
+				text_window.create_custom_row(input, "I don't need that kind of item.")
+			
+	else:
+		text_window.create_custom_row(input, first_name + ": No, I don't need anything you can Give me.")
+	
+	
+func grant(second_word):
+	pass
+
+
+func handle_keyword_system():
+	pass
 
 
 func process_command_combat(input):
@@ -368,38 +423,23 @@ func take(second_word: String) -> String:
 		return "No items to take!"
 	
 	#### PROCESS NAME to pick item
-	for item in current_room.get_items():
-		if second_word.to_lower() == item.item_id:
-			
-			if item is ItemContainer:
-				#if item.is_in_group("containers"):
-				return "You can't pick up a container."
-			
-			else:
-				current_room.remove_item(item)
-				visual_panel.set_items_list(current_room.get_items())
-				player.take_item(item)
-				return "You pick up a %s!" % item.item_name
-				
-	#### PROCESS NUM to pick up item
-	if second_word in nums:
-			
-			var num = int(second_word)
-			var item = null
-			
-			if current_room.get_items().size() >= num:
-				item = current_room.get_items()[num - 1]
-			
-			if item is ItemContainer:
-				#if item.is_in_group("containers"):
-				return "You can't pick up a container."
-			
-			if item != null:
-				current_room.remove_item(item)
-				visual_panel.set_items_list(current_room.get_items())
-				player.take_item(item)
-				return "You pick up a %s!" % item.item_name
+	#### LOOK FOR ITEM IN INVENTORY
+	var item = look_for_item_in_list(current_room.get_items(), second_word)
 	
+	#### IF ITEM FOUND, USE IT		
+	if item != null:
+	
+		if item is ItemContainer:
+			#if item.is_in_group("containers"):
+			return "You can't pick up a container."
+		
+		else:
+			current_room.remove_item(item)
+			visual_panel.set_items_list(current_room.get_items())
+			player.take_item(item)
+			return "You pick up a %s!" % item.item_name
+				
+				
 	return "No such item is here."
 
 
@@ -414,21 +454,44 @@ func drop(second_word: String) -> String:
 		return "Your inventory is empty: no items to drop."
 	
 	#### Look for item in inventory
-	for item in inv:
-		if second_word.to_lower() == item.item_id:
-			
-			player.drop_item(item)
-			current_room.add_item_scene(item)
-			visual_panel.set_items_list(current_room.get_items())
-			return "You drop a %s on the ground!" % item.item_name
+	#### LOOK FOR ITEM IN INVENTORY
+	var item = look_for_item_in_list(inv, second_word)
+	
+	#### IF ITEM FOUND, USE IT		
+	if item != null:
+		
+		player.drop_item(item)
+		current_room.add_item_scene(item)
+		visual_panel.set_items_list(current_room.get_items())
+		return "You drop a %s on the ground!" % item.item_name
+	
 	
 	#### Item not found.
 	return "You possess no such item."
 	
-	
-func use(second_word) -> String:
+
+func look_for_item_in_list(item_list, item_id: String) -> Node:
 	
 	var nums = ["1","2","3","4","5","6","7","8","9",10,11,12,13,14,15,16,17,18,19,20]
+	var item = null
+	
+	#### Get ITEM by its NUMBER in list (inventory for example)
+	if item_id in nums:
+			
+		var num = int(second_word)
+		if item_list.size() >= num - 1:
+			item = item_list[num - 1]
+	
+	#### Get ITEM by BROWSING the list (inventory etc)		
+	for item2 in item_list:
+		if second_word.to_lower() == item2.item_id.to_lower():
+			item = item2
+				
+	return item
+	
+	
+	
+func use(second_word) -> String:
 	
 	var inv = player.get_inventory()
 	
@@ -438,32 +501,18 @@ func use(second_word) -> String:
 	if inv.empty():
 		return "Your inventory is empty: no items to use."
 	
-	#### PROCESS NUM to pick up item
-	if second_word in nums:
-			
-			var num = int(second_word)
-			var item = null
-			
-			if inv.size() >= num - 1:
-				item = inv[num - 1]
-			
-			if item != null:
-				if item.item_type == "key":
-					return use_key(item)
 	
-	#### Look for item in inventory
-	for item in inv:
-		
+	#### LOOK FOR ITEM IN INVENTORY
+	var item = look_for_item_in_list(inv, second_word)
 	
-		if second_word.to_lower() == item.item_id.to_lower():
+	#### IF ITEM FOUND, USE IT		
+	if item != null:
+		match item.item_type:
 			
-			match item.item_type:
-				
-				"key":
-					return use_key(item)
-					
-				_:
-					return "Error: use case to be implemented"
+			"key":
+				return use_key(item)
+			_:
+				return "Error: use case to be implemented"
 					
 	#### Item not found.
 	return "You possess no such item."
@@ -475,6 +524,8 @@ func use_key(item):
 		if exit.room_2.room_id == item.use_value:
 			exit.unlock_exit(current_room)
 			player.drop_item(item)
+			
+			visual_panel.set_exits_list(current_room.exits, current_room)
 			return "You unlocked %s! The %s is lost." % [exit.exit_type, item.item_name]
 								
 	return "No valid doors for this key in this room."
@@ -525,6 +576,12 @@ func change_room(new_room) -> String:
 		visual_panel.set_zone_label("in " + zone.zone_name)
 		visual_panel.build_zonemap()
 		visual_panel.change_room_icon()
+		
+		
+		var items_list = current_room.get_items()
+		visual_panel.set_exits_list(current_room.exits, current_room)
+		visual_panel.set_items_list(items_list)
+		
 		
 		#### TEXT WINDOW PRINTOUT
 		var change_string = current_room.create_room_description()

@@ -6,6 +6,11 @@
 script = ExtResource( 1 )
 skill_name = "Strike"
 description = "Melee physical attack."
-time_cost = 0
+targeting = 1
+skill_type = 0
 damage = 10
 healing = 0
+cooldown = 0
+time_cost = 0
+has_status_effect = false
+status_effect = 0

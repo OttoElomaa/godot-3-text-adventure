@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource( 1 )
-skill_name = "Strong Strike"
-description = "Melee physical attack."
-targeting = 1
-skill_type = 0
-damage = 30
-healing = 0
+skill_name = "First Aid"
+description = "Weak heal spell."
+targeting = 0
+skill_type = 1
+damage = 0
+healing = 20
 cooldown = 0
 time_cost = 0
 has_status_effect = false

@@ -1,4 +1,4 @@
-extends Battler
+extends Control
 
 
 var inventory: Array = []
@@ -9,7 +9,7 @@ var usable_items := []
 func take_item(item):
 	
 	inventory.append(item)
-	$Inventory.add_child(item)
+	$Items.add_child(item)
 	
 	if item.is_usable:
 		usable_items.append(item)
@@ -18,13 +18,13 @@ func take_item(item):
 func drop_item(item):
 	
 	inventory.erase(item)
-	$Inventory.remove_child(item)
+	$Items.remove_child(item)
 	
 
 
 func get_inventory():
 	
-	return $Inventory.get_children()
+	return $Items.get_children()
 
 
 	
@@ -50,7 +50,7 @@ func create_inventory_string() -> String:
 			#usable_str += index_str + item.item_name + ", "
 			usable_str += "%s: %s (%s), " % [index_str, item.item_name, item.item_id]
 		else:
-			not_usable_str += i + item.item_name + ", "
+			not_usable_str += "%s: %s (%s), " % [index_str, item.item_name, item.item_id]
 	
 	
 	items_string += "Usable items: \n"

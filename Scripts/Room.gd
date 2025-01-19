@@ -128,11 +128,6 @@ func create_room_description() -> String:
 	var visual_panel = DataScene.get_visual_panel()
 	var text_window = DataScene.get_text_window()
 	
-	var exits_list = create_exit_list()
-	var items_list = get_items()
-	
-	visual_panel.set_exits_list(exits_list)
-	visual_panel.set_items_list(items_list)
 	
 	#### TEXT PANEL stuff
 	var room_string = "You are in %s." % room_name + " " + room_description
@@ -159,7 +154,7 @@ func create_exit_list():
 		exits_list.append(exits[key].exit_type + " " + key + ".")
 	return exits_list
 	
-		
+	
 	
 #### CREATE a PoolStringArray
 func create_pool_string(array: Array, delienator: String):

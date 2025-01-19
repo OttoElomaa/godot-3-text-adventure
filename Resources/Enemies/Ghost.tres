@@ -7,6 +7,9 @@
 script = ExtResource( 1 )
 sprite = ExtResource( 2 )
 entity_name = "Ghost"
+is_enemy = true
+mob_type = 0
+mob_sub_type = 0
 health = 50
 mana = 50
 armor = 100

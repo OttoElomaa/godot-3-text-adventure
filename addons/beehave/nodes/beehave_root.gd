@@ -34,18 +34,15 @@ func _ready():
 
 	set_process_mode(self.process_mode)
 
-"""
-func _process(delta):
-	tick(delta)
-  
-func _physics_process(delta):
-	tick(delta)
-	"""
+
 
 func tick(delta):
 	blackboard.set("delta", delta)
 
+	#### TEXT ADVENTURE GAME'S BATTLER FUNCTION
+	#blackboard.set("is_player", false)
 	var status = self.get_child(0).tick(actor, blackboard)
+	
 	
 	if status != RUNNING:
 		blackboard.set("running_action", null)

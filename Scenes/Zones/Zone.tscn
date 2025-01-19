@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Zone.gd" type="Script" id=2]
@@ -7,8 +7,11 @@
 [ext_resource path="res://Scenes/Rooms/RoomShrine.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Rooms/ZoneSwitchRoom.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Rooms/RoomCave.tscn" type="PackedScene" id=7]
-[ext_resource path="res://ScenesMisc/CombatEncounter.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scripts/CombatEncounter.gd" type="Script" id=8]
 [ext_resource path="res://Sprites/room-icon-basic.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/battleback5.png" type="Texture" id=10]
+[ext_resource path="res://Resources/Enemies/Ghost.tres" type="Resource" id=11]
+[ext_resource path="res://Scenes/Battlers/Battler.tscn" type="PackedScene" id=12]
 
 [node name="Zone" type="Control"]
 script = ExtResource( 2 )
@@ -47,17 +50,18 @@ room_id = 1111
 room_description = "A temple room with lit candles adorning an altar of stone. The wooden statues seem to depict horrible elder gods."
 
 [node name="SwitchRoom" parent="." instance=ExtResource( 6 )]
-margin_left = 474.0
-margin_top = 844.0
-margin_right = 874.0
-margin_bottom = 1044.0
+margin_left = 1411.0
+margin_top = 823.0
+margin_right = 1811.0
+margin_bottom = 1023.0
+room_id = 1002
 switch_to_room = "Meadow1"
 
 [node name="Cave1" parent="." instance=ExtResource( 7 )]
-margin_left = 969.0
-margin_top = 814.0
-margin_right = 1369.0
-margin_bottom = 1014.0
+margin_left = 951.0
+margin_top = 1102.0
+margin_right = 1351.0
+margin_bottom = 1302.0
 
 [node name="EvilCave" parent="." instance=ExtResource( 7 )]
 margin_left = -422.0
@@ -67,12 +71,44 @@ margin_bottom = 783.0
 room_name = "an Evil Cave"
 has_combat = true
 
-[node name="CombatEncounter" parent="EvilCave" instance=ExtResource( 8 )]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="CombatEncounter" type="Control" parent="EvilCave"]
+visible = false
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 393.0
 margin_bottom = 193.0
+grow_horizontal = 2
+size_flags_horizontal = 7
+size_flags_vertical = 7
+script = ExtResource( 8 )
+
+[node name="Texture" type="TextureRect" parent="EvilCave/CombatEncounter"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 600, 300 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 6
+
+[node name="Enemies" type="Control" parent="EvilCave/CombatEncounter"]
+margin_right = 600.0
+margin_bottom = 300.0
+
+[node name="Battler" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
+battler_resource = ExtResource( 11 )
+
+[node name="Battler2" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
+battler_resource = ExtResource( 11 )
+
+[node name="Battler3" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
+battler_resource = ExtResource( 11 )
+
+[node name="Antechamber" parent="." instance=ExtResource( 4 )]
+margin_left = 943.0
+margin_top = 830.0
+margin_right = 1343.0
+margin_bottom = 1030.0
+room_name = "an Antechamber"
+room_description = "A decorated hall, the west wall housing the exit door. Bright daylight filters through cool glass windows."

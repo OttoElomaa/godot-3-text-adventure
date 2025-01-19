@@ -5,4 +5,8 @@
 #items
 bread-loaf,Loaf of Bread,food,5,2
 venison,Cut of Venison,food,10,5
+
 key,Iron Key,key,1111,0
+exit-key,Exit Key,key,1002,0
+
+elfbone,Bone of Valus,questitem,0,0

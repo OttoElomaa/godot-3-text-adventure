@@ -3,12 +3,19 @@ extends Node
 
 export (Resource) var skill_resource = null
 
-##############
-export (String) var skill_name = "SkillName"
-export (String) var description = "SkillDescription"
+var enum_targeting = null
+var enum_skill_types = null
+var enum_status_effects = null
 
-export (int) var damage = 0
-export (int) var healing = 0
+##############
+var skill_name := "SkillName"
+var description := "SkillDescription"
+
+var targeting = null
+var skill_type = null
+
+var damage := 0
+var healing := 0
 
 var combat = null
 var battler = null
@@ -17,35 +24,63 @@ var target_group = null
 var target = null
 
 
+	
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	setup(self.skill_resource)
+	#setup(self.skill_resource)
+	pass
 	
 	
 func setup(resource):
 
 	combat = DataScene.get_combat_screen()
 
+	enum_targeting = resource.Targeting
+	enum_skill_types = resource.SkillTypes
+	enum_status_effects = resource.StatusEffects
+
+
 	skill_name = resource.skill_name
 	description = resource.description
 
+	targeting = resource.targeting
+	skill_type = resource.skill_type
+
 	damage = resource.damage
-	healing = resource.damage
+	healing = resource.healing
 
 
 func activate(actor):
 	
 	battler = actor
-	
-	if actor.is_enemy == true:
-		target_group = combat.ally_group
-		
-	else:
-		target_group = combat.enemy_group
-	
+	target = battler.target
 	$BeehaveRoot.tick(1)
 
+
+func get_target_group(character):
+	
+	if character.is_enemy:
+		
+		if targeting == enum_targeting.FRIENDLY:
+			return combat.enemy_group
+		elif targeting == enum_targeting.HOSTILE:
+			return combat.ally_group
+		else:
+			pass
+	
+	else:
+		
+		if targeting == enum_targeting.FRIENDLY:
+			return combat.ally_group
+		elif targeting == enum_targeting.HOSTILE:
+			return combat.enemy_group
+		else:
+			pass
+			
+			
 
 func deal_damage(target):
 	
@@ -59,3 +94,19 @@ func deal_damage(target):
 	combat.handle_combat_output(text, color)
 
 	target.handle_damage()
+	
+
+#### WIP	
+func heal(target):
+	
+	var color = Color.aquamarine
+	if battler.is_enemy:
+		color = Color.cornflower
+	
+	target.stats.health += healing
+	
+	var text = "%s is healed by %d!" % [target.entity_name, healing]
+	combat.handle_combat_output(text, color)
+
+	#target.handle_damage()	
+
