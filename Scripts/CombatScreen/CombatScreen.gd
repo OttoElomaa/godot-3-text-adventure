@@ -107,7 +107,7 @@ func setup_and_fight(room):
 		#### PUT IN DICT
 		dict_enemies_and_sprites[enemy] = sprites[sprite_count]
 		
-		sprites[sprite_count].get_node("Sprite").texture = enemy.texture.texture
+		sprites[sprite_count].get_node("Sprite").texture = enemy.texture
 		#sprites[sprite_count].get_node("Sprite").scale = Vector2(1.8, 1.8)
 		sprites[sprite_count].show()
 		sprite_count += 1
@@ -136,6 +136,7 @@ func fight_battle():
 		for battler in battlers:
 			if combat_ended == false:
 				battler.handle_counters()
+				#battler.handle_status()
 			
 		#### LOOP through list of all BATTLERS
 		for battler in battlers:

@@ -16,6 +16,9 @@ func play_anim_attack():
 	$Animations.play("Attack")
 	
 
+func play_anim_hurt():
+	$Animations.play("Hurt")
+
 
 func animation_ended():
 	

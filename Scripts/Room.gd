@@ -141,6 +141,16 @@ func create_npc_description() -> String:
 		return "%s, %s is here." % [room_character.npc_name, room_character.npc_description]
 
 
+func create_encounter_description() -> String:
+	
+	if encounter == null:
+		return ""
+	
+	var count = encounter.get_node("Enemies").get_child_count()
+	var stri = "You are beset by enemies! There are %d creatures." % count
+	stri += "\nWill you Fight or will you Run?"
+	return stri
+
 
 #### LIST to use in VISUAL panel
 func create_exit_list():

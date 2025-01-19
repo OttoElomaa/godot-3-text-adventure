@@ -7,13 +7,16 @@ signal battler_finished_turn
 onready var SkillScene = preload("res://Scenes/Skill.tscn")
 
 onready var SkillStrike = preload("res://Resources/Skills/Strike.tres")
+
 onready var SkillStrongStrike = preload("res://Resources/Skills/StrongStrike.tres")
 onready var SkillFirstAid = preload("res://Resources/Skills/FirstAid.tres")
-
+onready var SkillBite = preload("res://Resources/Skills/Bite.tres")
 
 
 export (Resource) var battler_resource = null
-onready var texture := $Texture
+onready var texture: Resource = null
+
+onready var status_handler = $StatusHandler
 
 onready var stats := $Stats
 onready var skills := $Skills
@@ -56,7 +59,7 @@ func check_stunned():
 func set_stats_from_resource():
 	
 	#### SETUP own components
-	$StatusHandler.setup()
+	status_handler.setup()
 	combat = DataScene.get_combat_screen()
 	
 	#### Get RESOURCE
@@ -69,7 +72,7 @@ func set_stats_from_resource():
 	
 	entity_name = stat_resource.entity_name
 	is_enemy = stat_resource.is_enemy
-	texture.texture = stat_resource.sprite
+	texture = stat_resource.sprite
 	
 	#### Stuff in Self.STATS node	
 	stats.health = stat_resource.health
@@ -114,6 +117,12 @@ func set_skills(mob_type, mob_sub_type, stat_resource):
 			create_special_skill(SkillFirstAid)
 			create_special_skill(SkillStrongStrike)
 		
+		sub_type_enum.Vermin:
+			create_special_skill(SkillBite)
+
+func get_skills():
+	return skills.get_children()
+
 		
 func create_skill_node(resource):
 	
@@ -140,22 +149,27 @@ func play_turn():
 	return is_enemy		
 
 
+
 func put_skill_on_cooldown(skill: Node):
 	
-	$StatusHandler.add_cooldown_counter(skill)
+	status_handler.add_cooldown_counter(skill)
 
+
+func add_status_counter(skill):
+	status_handler.add_status_counter(skill)
+	
 
 
 func handle_counters():
 	
-	$StatusHandler.play_counters_turn()
+	status_handler.play_counters_turn()
 
 
 
 #### CHECKING COOLDOWN	
 func check_for_cooldown(skill: Node):
 	
-	for counter in $StatusHandler.cooldown_counters:
+	for counter in status_handler.cooldown_counters:
 		if is_instance_valid(counter):
 			
 			if counter.skill.skill_name == skill.skill_name:
@@ -166,7 +180,7 @@ func check_for_cooldown(skill: Node):
 
 func get_cooldown_duration(skill: Node) -> int: 
 	
-	for counter in $StatusHandler.cooldown_counters:
+	for counter in status_handler.cooldown_counters:
 		if is_instance_valid(counter):
 			
 			if counter.skill.skill_name == skill.skill_name:
@@ -190,11 +204,9 @@ func remove_battler():
 	
 	var combat = DataScene.get_combat_screen()
 	
-	
-	
 	combat.battlers.erase(self)
 	
-	texture.hide()
+	#texture.hide()
 	
 	if is_enemy:
 		combat.dict_enemies_and_sprites[self].hide()
@@ -209,5 +221,13 @@ func update_resource_bars():
 	
 	battler_info_panel.update_resource_bars()	
 	
-	
+
+
+
+func play_anim_attack():
+	combat.dict_enemies_and_sprites[self].play_anim_attack()
+
+
+func play_anim_hurt():
+	combat.dict_enemies_and_sprites[self].play_anim_hurt()
 	

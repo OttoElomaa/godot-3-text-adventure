@@ -19,8 +19,8 @@ var counter_turns = 0
 
 #### THE associated skill or effect.
 var skill: Node = null
-var status_effect = ""
-
+var status_effect = null
+var status_effect_str := ""
 	
 
 func counter_init(battler, skill_input, type):
@@ -34,12 +34,14 @@ func counter_init(battler, skill_input, type):
 		
 		status = true
 		counter_turns = skill.status_duration + 1
-		status_effect = skill.status_type
+		status_effect = skill.status_effect
+		status_effect_str = skill.status_effect_str
 		
 	elif type == "cooldown":
 		
 		cooldown = true
 		counter_turns = skill.cooldown + 1
+	
 		
 	
 

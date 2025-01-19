@@ -1,16 +1,16 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Enemies/BaseBattler.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/enemy-ghost-basic.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/enemy-rat-transparent-32px.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
 sprite = ExtResource( 2 )
-entity_name = "Ghost"
+entity_name = "Rat"
 is_enemy = true
 mob_type = 0
-mob_sub_type = 0
-health = 60
+mob_sub_type = 2
+health = 50
 mana = 50
 armor = 100
 attack_power = 100

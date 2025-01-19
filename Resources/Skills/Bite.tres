@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-skill_name = "Strong Strike"
+skill_name = "Bite"
 description = "Melee physical attack."
 targeting = 1
 skill_type = 0
@@ -12,7 +12,7 @@ damage = 30
 healing = 0
 cooldown = 1
 time_cost = 0
-has_status_effect = false
-status_effect = 0
-status_effect_str = "StatusEffect"
-status_duration = 0
+has_status_effect = true
+status_effect = 1
+status_effect_str = "Poison"
+status_duration = 3

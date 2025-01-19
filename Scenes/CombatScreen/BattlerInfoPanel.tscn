@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://BackgroundResources/ProgressBarBackground.tres" type="StyleBox" id=1]
 [ext_resource path="res://BackgroundResources/HealthBarRed.tres" type="StyleBox" id=2]
 [ext_resource path="res://BackgroundResources/ManaBarBlue.tres" type="StyleBox" id=3]
 [ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Fonts/LightFont.tres" type="DynamicFont" id=5]
-[ext_resource path="res://Scripts/BattlerInfoPanel.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/CombatScreen/BattlerInfoPanel.gd" type="Script" id=6]
 [ext_resource path="res://BackgroundResources/TextWindowViolet.tres" type="StyleBox" id=7]
+[ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=8]
 
 [node name="BattlerInfoPanel" type="PanelContainer"]
 margin_right = 80.0
@@ -17,7 +18,7 @@ script = ExtResource( 6 )
 
 [node name="VBox" type="VBoxContainer" parent="."]
 margin_right = 132.0
-margin_bottom = 126.0
+margin_bottom = 179.0
 
 [node name="NamePanel" type="PanelContainer" parent="VBox"]
 margin_right = 132.0
@@ -82,6 +83,14 @@ text = "ManaValue"
 align = 1
 valign = 1
 
+[node name="StatusRows" parent="VBox" instance=ExtResource( 8 )]
+margin_top = 79.0
+margin_right = 132.0
+margin_bottom = 179.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 1
+custom_styles/panel = ExtResource( 7 )
+
 [node name="N2" type="Control" parent="."]
 margin_right = 132.0
-margin_bottom = 126.0
+margin_bottom = 179.0

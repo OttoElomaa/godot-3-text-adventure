@@ -6,7 +6,7 @@ extends Node
 
 enum GameStates {
 	
-	EXPLORE, DIALOGUE, COMBAT
+	EXPLORE, DIALOGUE, COMBAT, EVENT
 	
 }
 

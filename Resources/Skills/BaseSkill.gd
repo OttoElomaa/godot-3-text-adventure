@@ -31,5 +31,6 @@ export (int) var cooldown = 0
 export (int) var time_cost = 0
 
 export (bool) var has_status_effect = false 
-export (StatusEffects) var status_effect = StatusEffects.NONE 
-
+export (StatusEffects) var status_effect = StatusEffects.NONE
+export (String) var status_effect_str = "StatusEffect" 
+export (int) var status_duration = 0

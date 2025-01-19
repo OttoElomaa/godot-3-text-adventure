@@ -25,8 +25,15 @@ func build_zonemap():
 func change_room_icon():
 	
 	var room_sprite = $TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport/RoomSprite
-
-	room_sprite.texture = DataScene.get_command_parser().current_room.room_icon
+	var encounter_sprite = $TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport/RoomSprite/EncounterSprite
+	
+	encounter_sprite.hide()
+	var room = DataScene.get_command_parser().current_room
+	
+	room_sprite.texture = room.room_icon
+	
+	if room.has_combat:
+		encounter_sprite.show()
 
 
 func display_alt_panel():

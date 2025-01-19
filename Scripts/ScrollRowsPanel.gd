@@ -3,6 +3,7 @@ extends PanelContainer
 
 #### CONSTS - nodes to create
 const OutputMessage = preload("res://Scenes/OutputMessage.tscn")
+const OutputMiniMessage = preload("res://ScenesMisc/OutputMiniMessage.tscn")
 
 #### Stuff OUTSIDE this scene
 #onready var visual_panel = get_parent().get_node("VisualPanel")
@@ -91,7 +92,15 @@ func wipe_history():
 		history_rows.get_child(i).queue_free()
 	
 	
+
+
+func handle_adding_mini_message(message_text: String, color):
 	
+	var message = OutputMiniMessage.instance()
+	message.text = message_text 
+	message.modulate = color
+	
+	add_output_message(message)
 
 
 

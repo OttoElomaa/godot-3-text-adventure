@@ -19,6 +19,8 @@ func _ready():
 	
 	current_zone = $Zone
 	starting_room = current_zone.first_room
+	#### JUST TO DEBUG: GO TO DIFF ROOM
+	#starting_room = current_zone.antechamber
 	
 	command_parser.setup(starting_room, $Inventory)
 	

@@ -31,16 +31,15 @@ func setup():
 	#### CONNECTIONS
 	
 	first_room.connect_exit_normal("east", hallway1, WoodenDoor)
-	first_room.connect_exit_normal("west", evil_cave, Passage)
 	
+	hallway1.connect_exit_normal("south", evil_cave, Passage)
 	hallway1.connect_exit_normal("north", white_room, Passage)
-	
-	#### EXIT ROOM; TESTING ATM -> OK it works
-	
 	hallway1.connect_exit_locked("east", shrine, MetalDoor)
 	
 	shrine.connect_exit_normal("south", antechamber, WoodenDoor)
 	antechamber.connect_exit_normal("south", cave, WoodenDoor)
+	
+	#### EXIT ROOM; TESTING ATM -> OK it works
 	antechamber.connect_exit_locked("east", switch_room, MetalDoor)
 	
 	
@@ -63,6 +62,9 @@ func setup():
 	var bone = DataScene.get_file_reader().get_item_by_id("elfbone")
 	shrine.add_item_scene(bone)
 	
+	#### DEBUG
+	var key3 = DataScene.get_file_reader().get_item_by_id("exit-key")
+	antechamber.add_item_scene(key3)
 	
 	#### NPCS
 	

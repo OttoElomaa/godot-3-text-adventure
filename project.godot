@@ -27,7 +27,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "Battler",
 "language": "GDScript",
-"path": "res://Scripts/Battler.gd"
+"path": "res://Scripts/CombatScreen/Battler.gd"
 }, {
 "base": "BeehaveTree",
 "class": "BeehaveNode",

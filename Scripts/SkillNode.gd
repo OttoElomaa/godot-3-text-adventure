@@ -25,9 +25,11 @@ var battler = null
 var target_group = null
 var target = null
 
+var has_status_effect = null
+var status_duration = null
 
-	
-
+var status_effect = null	
+var status_effect_str := ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -54,13 +56,20 @@ func setup(resource):
 	damage = resource.damage
 	healing = resource.healing
 	cooldown = resource.cooldown
-
+	
+	has_status_effect = resource.has_status_effect
+	status_duration = resource.status_duration
+	
+	status_effect = resource.status_effect
+	status_effect_str = resource.status_effect_str
+	
 
 func activate(actor):
 	
 	battler = actor
 	target = battler.target
 	$BeehaveRoot.tick(1)
+
 
 
 func get_target_group(character):
@@ -82,11 +91,13 @@ func get_target_group(character):
 			return combat.enemy_group
 		else:
 			pass
+		
 			
 
 func handle_skill_use_info():
 	
 	combat.handle_combat_output("\n" + battler.entity_name + " uses " + skill_name + "!", Color.white)
+		
 			
 
 func deal_damage(target):
@@ -100,7 +111,10 @@ func deal_damage(target):
 	var text = "%s takes %d damage!" % [target.entity_name, damage]
 	combat.handle_combat_output(text, color)
 
+	if target.is_enemy:
+		target.play_anim_hurt()
 	target.handle_damage()
+	
 	
 
 #### WIP	
@@ -115,9 +129,6 @@ func heal(target):
 		healing = heal_diff
 		
 	target.stats.health += healing
-	
-	
-	
 	
 	
 	var text = "%s is healed by %d!" % [target.entity_name, healing]

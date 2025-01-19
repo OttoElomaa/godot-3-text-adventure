@@ -23,7 +23,8 @@ func tick(actor, blackboard):
 	
 	
 	skill.activate(actor)
-	combat.dict_enemies_and_sprites[actor].play_anim_attack()
+	actor.play_anim_attack()
+	
 	
 	#actor.combat.handle_combat_output("Target: " + actor.target.entity_name, Color.gray)	
 	return SUCCESS
