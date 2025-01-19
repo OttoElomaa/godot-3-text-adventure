@@ -2,10 +2,14 @@ extends VBoxContainer
 
 const OutputMessage = preload("res://Scenes/OutputMessage.tscn")
 
-onready var top_panel = $TopPanel
-onready var bottom_panel = $BottomPanel
-onready var alt_panel = $AltPanel
-onready var help_panel = $AltPanel/HelpPanel
+onready var top_panel := $TopPanel
+onready var bottom_panel := $BottomPanel
+onready var alt_panel := $AltPanel
+onready var help_panel := $AltPanel/HelpPanel
+
+var parser = null
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -76,6 +80,7 @@ func display_dialogue_screen(current_room):
 	$AltPanel/DialogueScreen/HBox/CharacterVBox/CharDescLabel.text = npc.npc_description
 	$AltPanel/DialogueScreen/HBox/CharacterVBox/CharDescLabel.modulate = Color.cornsilk
 	
+	$AltPanel/DialogueScreen/HBox/CharacterVBox/VPCont/Viewport/Sprite.texture = npc.npc_portrait
 	
 
 #### Functions to DISPLAY GAME INFO on the visual panel
@@ -113,7 +118,9 @@ func set_exits_list(exits, room):
 
 
 #### CALLED in ROOM Scene		
-func set_items_list(item_list):
+func set_items_list(item_list, container_or_null):
+	
+	#parser = DataScene.get_command_parser()
 	
 	#### Get the PANEL set up properly
 	var items_panel = $BottomPanel/Margins/HBox/ItemsRows
@@ -123,7 +130,16 @@ func set_items_list(item_list):
 	var counter = 0
 	var color = Color.whitesmoke
 	
-	items_panel.handle_adding_message("Items:", Color.mediumpurple)	
+	
+	
+	#### DISPLAY TITLE IN COOL WAY
+	var item_list_title = "Items:"
+	
+	if container_or_null != null:
+		item_list_title = "Items in %s:" % container_or_null.item_name
+	items_panel.handle_adding_message(item_list_title, Color.mediumpurple)	
+	#if parser.game_situation == Types.GameSituations.CONTAINER:
+	
 	
 	if item_list.empty():
 		items_panel.handle_adding_message("No items in this location.", color)	
@@ -135,14 +151,16 @@ func set_items_list(item_list):
 		items_panel.handle_adding_message("%s: %s (%s)" % [count_str, item_scene.item_name, item_scene.item_id], color)
 			#if item.has_method("i_am_a_container"):
 		
-			
+		counter += 1
+		
+		"""
 		for item in item_scene.get_children():
 			if item is ItemContainer:
 				print("DEBUG. CONTAINER")
 				item.print_to_string()
 				items_panel.handle_adding_message(item.item_name, color)
+		"""
 		
-		counter += 1
 		
 
 

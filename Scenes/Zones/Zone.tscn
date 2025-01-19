@@ -11,14 +11,18 @@
 [ext_resource path="res://Sprites/room-icon-basic.png" type="Texture" id=9]
 [ext_resource path="res://Sprites/battleback5.png" type="Texture" id=10]
 [ext_resource path="res://Resources/Enemies/Ghost.tres" type="Resource" id=11]
-[ext_resource path="res://Scenes/Battler.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/CombatScreen/Battler.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Resources/Enemies/GhostHealer.tres" type="Resource" id=13]
 
 [node name="Zone" type="Control"]
 script = ExtResource( 2 )
 zone_name = "Mysterious House"
 
-[node name="Room" parent="." instance=ExtResource( 1 )]
+[node name="Rooms" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Room" parent="Rooms" instance=ExtResource( 1 )]
 margin_left = 35.0
 margin_top = 587.0
 margin_right = 435.0
@@ -27,13 +31,13 @@ room_name = "Your Room"
 room_description = "This is a normal bedroom. You know you've lived here, though you don't remember it."
 room_icon = ExtResource( 9 )
 
-[node name="Hallway1" parent="." instance=ExtResource( 4 )]
+[node name="Hallway1" parent="Rooms" instance=ExtResource( 4 )]
 margin_left = 478.0
 margin_top = 590.0
 margin_right = 878.0
 margin_bottom = 790.0
 
-[node name="CustomRoom" parent="." instance=ExtResource( 3 )]
+[node name="CustomRoom" parent="Rooms" instance=ExtResource( 3 )]
 margin_left = 482.0
 margin_top = 347.0
 margin_right = 882.0
@@ -42,7 +46,7 @@ room_name = "a White Room"
 room_description = "A white room with black curtains."
 has_custom_text = true
 
-[node name="Shrine1" parent="." instance=ExtResource( 5 )]
+[node name="Shrine1" parent="Rooms" instance=ExtResource( 5 )]
 margin_left = 932.0
 margin_top = 591.0
 margin_right = 1332.0
@@ -50,7 +54,15 @@ margin_bottom = 791.0
 room_id = 1111
 room_description = "A temple room with lit candles adorning an altar of stone. The wooden statues seem to depict horrible elder gods."
 
-[node name="SwitchRoom" parent="." instance=ExtResource( 6 )]
+[node name="Antechamber" parent="Rooms" instance=ExtResource( 4 )]
+margin_left = 943.0
+margin_top = 830.0
+margin_right = 1343.0
+margin_bottom = 1030.0
+room_name = "an Antechamber"
+room_description = "A decorated hall, the west wall housing the exit door. Bright daylight filters through cool glass windows."
+
+[node name="SwitchRoom" parent="Rooms" instance=ExtResource( 6 )]
 margin_left = 1411.0
 margin_top = 823.0
 margin_right = 1811.0
@@ -58,13 +70,13 @@ margin_bottom = 1023.0
 room_id = 1002
 switch_to_room = "Meadow1"
 
-[node name="Cave1" parent="." instance=ExtResource( 7 )]
+[node name="Cave1" parent="Rooms" instance=ExtResource( 7 )]
 margin_left = 951.0
 margin_top = 1102.0
 margin_right = 1351.0
 margin_bottom = 1302.0
 
-[node name="EvilCave" parent="." instance=ExtResource( 7 )]
+[node name="EvilCave" parent="Rooms" instance=ExtResource( 7 )]
 margin_left = -422.0
 margin_top = 583.0
 margin_right = -22.0
@@ -72,18 +84,22 @@ margin_bottom = 783.0
 room_name = "an Evil Cave"
 has_combat = true
 
-[node name="CombatEncounter" type="Control" parent="EvilCave"]
+[node name="Encounters" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="GhostsEnc1" type="Control" parent="Encounters"]
 visible = false
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 393.0
-margin_bottom = 193.0
+margin_left = -415.0
+margin_top = 590.0
+margin_right = -29.0
+margin_bottom = 776.0
 grow_horizontal = 2
 size_flags_horizontal = 7
 size_flags_vertical = 7
 script = ExtResource( 8 )
 
-[node name="Texture" type="TextureRect" parent="EvilCave/CombatEncounter"]
+[node name="Texture" type="TextureRect" parent="Encounters/GhostsEnc1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 600, 300 )
@@ -93,23 +109,15 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
 
-[node name="Enemies" type="Control" parent="EvilCave/CombatEncounter"]
+[node name="Enemies" type="Control" parent="Encounters/GhostsEnc1"]
 margin_right = 600.0
 margin_bottom = 300.0
 
-[node name="Battler" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
+[node name="Battler" parent="Encounters/GhostsEnc1/Enemies" instance=ExtResource( 12 )]
 battler_resource = ExtResource( 11 )
 
-[node name="Battler2" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
+[node name="Battler2" parent="Encounters/GhostsEnc1/Enemies" instance=ExtResource( 12 )]
 battler_resource = ExtResource( 11 )
 
-[node name="Battler3" parent="EvilCave/CombatEncounter/Enemies" instance=ExtResource( 12 )]
+[node name="Battler3" parent="Encounters/GhostsEnc1/Enemies" instance=ExtResource( 12 )]
 battler_resource = ExtResource( 13 )
-
-[node name="Antechamber" parent="." instance=ExtResource( 4 )]
-margin_left = 943.0
-margin_top = 830.0
-margin_right = 1343.0
-margin_bottom = 1030.0
-room_name = "an Antechamber"
-room_description = "A decorated hall, the west wall housing the exit door. Bright daylight filters through cool glass windows."

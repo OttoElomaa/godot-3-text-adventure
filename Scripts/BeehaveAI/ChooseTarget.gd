@@ -5,6 +5,7 @@ var actor = null
 
 func tick(actor, blackboard):
 	
+	var combat = DataScene.get_combat_screen()
 	self.actor = actor
 	
 	var skill = blackboard.get("skill_to_use")
@@ -22,6 +23,7 @@ func tick(actor, blackboard):
 	
 	
 	skill.activate(actor)
+	combat.dict_enemies_and_sprites[actor].play_anim_attack()
 	
 	#actor.combat.handle_combat_output("Target: " + actor.target.entity_name, Color.gray)	
 	return SUCCESS

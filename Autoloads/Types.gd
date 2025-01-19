@@ -11,6 +11,11 @@ enum GameStates {
 }
 
 
+enum GameSituations {
+	
+	NONE, CONTAINER,
+}
+
 
 enum RoomTypes {
 	

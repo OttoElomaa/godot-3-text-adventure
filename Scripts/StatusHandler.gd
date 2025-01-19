@@ -44,7 +44,7 @@ func play_counters_turn():
 #### COUNTER CREATION Moved From Enemy FROM OTHER PROJECT
 func add_counter_help():
 	
-	var Counter = preload("res://ScenesMisc/Counter.tscn")
+	var Counter = preload("res://Scenes/CombatScreen/Counter.tscn")
 	var counter = Counter.instance()
 	add_child(counter)
 	

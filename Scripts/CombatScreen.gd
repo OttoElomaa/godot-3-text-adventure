@@ -8,8 +8,10 @@ onready var info_rows = $Right/Margins/Vbox/InfoRows
 
 signal player_character_finished_turn
 signal player_has_selected_target
+signal any_animation_has_ended
 
-var BattlerInfo = load("res://ScenesMisc/BattlerInfoPanel.tscn")
+
+var BattlerInfo = load("res://Scenes/CombatScreen/BattlerInfoPanel.tscn")
 
 
 ########################
@@ -77,12 +79,7 @@ func setup_and_fight(room):
 	
 	
 	current_room = room
-	
-	#### Scuffy way of moving the encounter HERE to use it for combat
-	encounter = current_room.get_node("CombatEncounter")
-	#current_room.remove_child(current_room.get_node("CombatEncounter"))
-	#canvas.add_child(encounter)
-	#encounter.show()
+	encounter = current_room.encounter
 	
 	#### The cast of battlers
 	var enemy_tab = $Middle/Enemies
@@ -92,21 +89,26 @@ func setup_and_fight(room):
 	party = DataScene.get_party()
 	
 	
-	#### SETUP AllyList and EnemyList	
+	#### SETUP AllyList and EnemyList
+		
 	setup_allies()
 	setup_enemies(encounter)
 	
 	#### SETUP Enemy 2D SPRITES
+	
 	var sprite_count = 0
 	var sprites = combat_2d.get_enemy_sprites()
 	
 	for spr in sprites:
 		spr.hide()
-	
+		
+	#### SET UP DICTIONARY TO PAIR ENEMIES WITH SPRITES
 	for enemy in enemy_group:
+		#### PUT IN DICT
 		dict_enemies_and_sprites[enemy] = sprites[sprite_count]
-		sprites[sprite_count].texture = enemy.texture.texture
-		sprites[sprite_count].scale = Vector2(1.8, 1.8)
+		
+		sprites[sprite_count].get_node("Sprite").texture = enemy.texture.texture
+		#sprites[sprite_count].get_node("Sprite").scale = Vector2(1.8, 1.8)
 		sprites[sprite_count].show()
 		sprite_count += 1
 		
@@ -146,7 +148,7 @@ func fight_battle():
 					yield(self, "player_character_finished_turn")
 				
 				#### ATTEMPT TO FIX COUNTER BUG WITH TIMER
-				yield(get_tree().create_timer(0.01), "timeout")
+				#yield(get_tree().create_timer(0.01), "timeout")
 				
 				for battler2 in battlers:
 					battler2.update_resource_bars()
@@ -154,7 +156,10 @@ func fight_battle():
 				#### END COMBAT	
 				if enemy_group.size() == 0:
 					combat_ended = true
-		
+			
+			if battler.is_enemy:
+				yield(self, "any_animation_has_ended")
+			
 		handle_combat_output("_____", Color.wheat)
 	
 	
@@ -418,6 +423,11 @@ func flee(game_root):
 	game_root.hide_combat_screen()
 	current_room.has_combat = false
 
+
+func emit_combat_ended():
+	
+	emit_signal("any_animation_has_ended")
+	
 
 
 func setup_allies():

@@ -8,22 +8,34 @@ var visual_panel = null
 var text_window = null
 
 var game_state = null
+var game_situation = null
 
 var player = null
 
 var current_zone = null
 var current_room = null
 var current_dialogue_npc = null
+var current_container = null
 
-var first_word = ""
-var second_word = ""
+var first_word := ""
+var second_word := ""
 
-var white_c = Color.white
-var yellow_c = Color.burlywood
-var green_c = Color.lightgreen
+var white_c := Color.white
+var yellow_c := Color.burlywood
+var green_c := Color.lightgreen
+
+
+enum Situations {
+	
+	NONE, CONTAINER,
+}
+
+
+
 
 
 #### This is CALLED Where??
+#### In GameRoot, now
 func setup(starting_room, player):
 	
 	game_root = DataScene.get_game_root()
@@ -32,7 +44,7 @@ func setup(starting_room, player):
 	
 	self.player = player
 	current_room = starting_room
-	change_room(current_room)
+	#change_room(current_room)
 	
 	var game_root = get_tree().root.get_node("GameRoot")
 	current_zone = game_root.get_node("Zone") 
@@ -109,18 +121,21 @@ func process_command_explore(input):
 			
 		"hail", "h", "speak", "talk",  "salute", "s":
 			return hail(first_word)
-			
+		
+		"fight", "f":
+			return fight()
+				
 		"take", "t", "get", "g":
 			return take(second_word)
 			
 		"use", "u":
 			return use(second_word)
-		
-		"inventory", "inv":
-			return inventory()
 			
 		"drop", "d":
 			return drop(second_word)
+		
+		"open":
+			return open(second_word)
 			
 		"help":
 			response = help()
@@ -129,8 +144,10 @@ func process_command_explore(input):
 			
 			response = hide()
 			
-		"fight", "f":
-			return fight()
+		
+			
+		"inventory", "inv":
+			return inventory()	
 			
 	return response 
 
@@ -260,10 +277,10 @@ func give(input, second_word):
 					text_window.handle_adding_message(current_dialogue_npc.post_quest_dialogue, white_c)
 					
 					text_window.handle_adding_message("You give the " + item.item_name + " away!", yellow_c)
-					player.drop_item(item)
+					player.remove_from_inventory(item)
 					
 					var grant_item = DataScene.get_file_reader().get_item_by_id(npc.grant_item_id)
-					player.take_item(grant_item)
+					player.put_in_inventory(grant_item)
 			_:
 				text_window.create_custom_row(input, "I don't need that kind of item.")
 			
@@ -423,9 +440,11 @@ func take(second_word: String) -> String:
 	if current_room.get_items().empty():
 		return "No items to take!"
 	
-	#### PROCESS NAME to pick item
-	#### LOOK FOR ITEM IN INVENTORY
-	var item = look_for_item_in_list(current_room.get_items(), second_word)
+	#### LOOK IN CURRENT ROOM OR CURRENT CONTAINER (CHEST ETC)
+	var items_list = get_right_item_list()
+	
+	#### LOOK FOR ITEM IN LIST
+	var item = look_for_item_in_list(items_list, second_word)
 	
 	#### IF ITEM FOUND, USE IT		
 	if item != null:
@@ -435,13 +454,53 @@ func take(second_word: String) -> String:
 			return "You can't pick up a container."
 		
 		else:
-			current_room.remove_item(item)
-			visual_panel.set_items_list(current_room.get_items())
-			player.take_item(item)
+			if current_container != null:
+				current_container.remove_item(item)
+			else:
+				current_room.remove_item(item)
+			
+			
+			player.put_in_inventory(item)
+			
+			items_list = get_right_item_list()
+			visual_panel.set_items_list(items_list, current_container)
 			return "You pick up a %s!" % item.item_name
 				
 				
 	return "No such item is here."
+
+
+func get_right_item_list():
+	
+	if game_situation == Situations.CONTAINER:
+		return current_container.get_children()
+	return current_room.get_items()
+
+
+func forget_current_container():
+	pass
+
+
+func open(second_word: String) -> String:
+	
+	var item = look_for_item_in_list(current_room.get_items(), second_word)
+	
+	#### IF ITEM FOUND, USE IT		
+	if item != null:
+	
+		#### IS CHEST ETC:
+		#### SET PROPER SITUATION, DISPLAY ITEMS INSIDE
+		if item is ItemContainer:
+			
+			game_situation = Situations.CONTAINER
+			current_container = item
+			
+			visual_panel.set_items_list(item.get_children(), item)
+			return "You pry open the %s." % item.item_name
+		
+			
+	return "There's no container here."
+
 
 
 func drop(second_word: String) -> String:
@@ -461,7 +520,7 @@ func drop(second_word: String) -> String:
 	#### IF ITEM FOUND, USE IT		
 	if item != null:
 		
-		player.drop_item(item)
+		player.remove_from_inventory(item)
 		current_room.add_item_scene(item)
 		visual_panel.set_items_list(current_room.get_items())
 		return "You drop a %s on the ground!" % item.item_name
@@ -524,7 +583,7 @@ func use_key(item):
 	for exit in current_room.exits.values():
 		if exit.room_2.room_id == item.use_value:
 			exit.unlock_exit(current_room)
-			player.drop_item(item)
+			player.remove_from_inventory(item)
 			
 			visual_panel.set_exits_list(current_room.exits, current_room)
 			return "You unlocked %s! The %s is lost." % [exit.exit_type, item.item_name]
@@ -567,10 +626,13 @@ func change_room(new_room) -> String:
 		current_zone = new_zone
 		change_room(new_start_room)
 	
+	
 	#### 2: Called in BASIC rooms and AFTER room switch (the If above)
 	else:
+		
 		current_room = new_room
-		var zone = current_room.get_parent()
+		var zone = current_room.get_parent().get_parent()
+		#DataScene.get_command_parser().current_zone
 		
 		var visual_panel = DataScene.get_visual_panel()
 		visual_panel.set_room_label(current_room.room_name)
@@ -581,7 +643,7 @@ func change_room(new_room) -> String:
 		
 		var items_list = current_room.get_items()
 		visual_panel.set_exits_list(current_room.exits, current_room)
-		visual_panel.set_items_list(items_list)
+		visual_panel.set_items_list(items_list, null)
 		
 		
 		#### TEXT WINDOW PRINTOUT

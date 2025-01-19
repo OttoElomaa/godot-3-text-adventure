@@ -16,17 +16,23 @@ script = ExtResource( 1 )
 margin_right = 200.0
 margin_bottom = 89.0
 mouse_filter = 1
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
 
 [node name="ScrollCont" type="ScrollContainer" parent="MarginContainer"]
-margin_right = 200.0
-margin_bottom = 89.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 195.0
+margin_bottom = 84.0
 focus_mode = 2
 mouse_filter = 1
 scroll_horizontal_enabled = false
 
 [node name="Rows" type="VBoxContainer" parent="MarginContainer/ScrollCont"]
-margin_right = 200.0
-margin_bottom = 89.0
+margin_right = 190.0
+margin_bottom = 79.0
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

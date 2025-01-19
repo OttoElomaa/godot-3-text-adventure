@@ -11,7 +11,7 @@
 [ext_resource path="res://addons/beehave/nodes/composites/sequence.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/BeehaveAI/StunnedCheck.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/BeehaveAI/ChooseTarget.gd" type="Script" id=11]
-[ext_resource path="res://ScenesMisc/StatusHandler.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/CombatScreen/StatusHandler.tscn" type="PackedScene" id=12]
 
 [node name="Battler" type="Control"]
 anchor_left = -0.049

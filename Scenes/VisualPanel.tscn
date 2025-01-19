@@ -6,7 +6,7 @@
 [ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://ScenesMisc/MiscUI/ZoneMap.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Fonts/LightFont.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Scenes/DialogueScreen.tscn" type="PackedScene" id=7]
 
 [node name="VisualPanel" type="VBoxContainer"]
 margin_left = 502.0
@@ -160,47 +160,4 @@ custom_constants/margin_top = 5
 custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
 
-[node name="DialogueScreen" type="PanelContainer" parent="AltPanel"]
-margin_right = 630.0
-margin_bottom = 362.0
-custom_styles/panel = ExtResource( 3 )
-
-[node name="HBox" type="HBoxContainer" parent="AltPanel/DialogueScreen"]
-margin_right = 630.0
-margin_bottom = 362.0
-
-[node name="Scroll" type="ScrollContainer" parent="AltPanel/DialogueScreen/HBox"]
-margin_right = 200.0
-margin_bottom = 362.0
-rect_min_size = Vector2( 200, 200 )
-
-[node name="KeywordRows" parent="AltPanel/DialogueScreen/HBox/Scroll" instance=ExtResource( 5 )]
-margin_bottom = 362.0
-
-[node name="CharacterVBox" type="VBoxContainer" parent="AltPanel/DialogueScreen/HBox"]
-margin_left = 204.0
-margin_right = 504.0
-margin_bottom = 362.0
-
-[node name="ViewportCont" type="ViewportContainer" parent="AltPanel/DialogueScreen/HBox/CharacterVBox"]
-margin_right = 300.0
-margin_bottom = 300.0
-
-[node name="Viewport" type="Viewport" parent="AltPanel/DialogueScreen/HBox/CharacterVBox/ViewportCont"]
-size = Vector2( 300, 300 )
-handle_input_locally = false
-render_target_update_mode = 0
-
-[node name="CharNameLabel" type="Label" parent="AltPanel/DialogueScreen/HBox/CharacterVBox"]
-margin_top = 304.0
-margin_right = 300.0
-margin_bottom = 331.0
-custom_fonts/font = ExtResource( 4 )
-text = "Character Name"
-
-[node name="CharDescLabel" type="Label" parent="AltPanel/DialogueScreen/HBox/CharacterVBox"]
-margin_top = 335.0
-margin_right = 300.0
-margin_bottom = 362.0
-custom_fonts/font = ExtResource( 7 )
-text = "Char Description"
+[node name="DialogueScreen" parent="AltPanel" instance=ExtResource( 7 )]

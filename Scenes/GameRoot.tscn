@@ -7,14 +7,12 @@
 [ext_resource path="res://Scenes/Zones/Zone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Inventory.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Zones/HamletZone.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scenes/CombatScreen.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Scenes/Battler.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/CombatScreen/CombatScreen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/CombatScreen/Battler.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Resources/Enemies/Player.tres" type="Resource" id=10]
 [ext_resource path="res://Resources/Enemies/Dog.tres" type="Resource" id=11]
 [ext_resource path="res://ScenesMisc/FileReader.tscn" type="PackedScene" id=12]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.0862745, 0.0941176, 0.113725, 1 )
+[ext_resource path="res://BackgroundResources/MainDarkBackground.tres" type="StyleBox" id=13]
 
 [node name="GameRoot" type="Control"]
 anchor_right = 1.0
@@ -24,7 +22,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 4 )
 
-[node name="Party" type="Node" parent="."]
+[node name="Party" type="Control" parent="."]
+margin_top = -200.0
+margin_bottom = -200.0
 
 [node name="Dog" parent="Party" instance=ExtResource( 9 )]
 battler_resource = ExtResource( 11 )
@@ -53,7 +53,7 @@ margin_bottom = -1500.0
 [node name="MainPanel" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = ExtResource( 13 )
 
 [node name="MarginContainer" type="MarginContainer" parent="MainPanel"]
 margin_right = 1300.0
@@ -71,11 +71,11 @@ margin_bottom = 780.0
 custom_constants/separation = 20
 
 [node name="TextWindow" parent="MainPanel/MarginContainer/Horizontal" instance=ExtResource( 1 )]
-margin_right = 620.0
+margin_right = 610.0
 margin_bottom = 760.0
 
 [node name="VisualPanel" parent="MainPanel/MarginContainer/Horizontal" instance=ExtResource( 2 )]
-margin_left = 640.0
+margin_left = 630.0
 margin_right = 1260.0
 margin_bottom = 760.0
 

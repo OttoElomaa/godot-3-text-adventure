@@ -6,7 +6,7 @@ var usable_items := []
 
 
 
-func take_item(item):
+func put_in_inventory(item):
 	
 	inventory.append(item)
 	$Items.add_child(item)
@@ -14,16 +14,27 @@ func take_item(item):
 	if item.is_usable:
 		usable_items.append(item)
 	
-
-func drop_item(item):
+	
+	
+func remove_from_inventory(item):
 	
 	inventory.erase(item)
 	$Items.remove_child(item)
 	
 
 
-func get_inventory():
+func take_item_from_room(item):
+	pass
 	
+	
+
+func drop_item_in_room(item):
+	pass
+	
+	
+
+
+func get_inventory():
 	return $Items.get_children()
 
 

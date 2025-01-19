@@ -1,0 +1,65 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/LightFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://BackgroundResources/TextWindowStyle.tres" type="StyleBox" id=4]
+[ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://BackgroundResources/MainDarkBackground.tres" type="StyleBox" id=6]
+
+[node name="DialogueScreen" type="PanelContainer"]
+margin_right = 630.0
+margin_bottom = 362.0
+custom_styles/panel = ExtResource( 4 )
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 630.0
+margin_bottom = 362.0
+
+[node name="Scroll" type="MarginContainer" parent="HBox"]
+margin_right = 200.0
+margin_bottom = 362.0
+rect_min_size = Vector2( 200, 200 )
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="KeywordRows" parent="HBox/Scroll" instance=ExtResource( 5 )]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 190.0
+margin_bottom = 352.0
+custom_styles/panel = ExtResource( 6 )
+
+[node name="CharacterVBox" type="VBoxContainer" parent="HBox"]
+margin_left = 204.0
+margin_right = 504.0
+margin_bottom = 362.0
+
+[node name="VPCont" type="ViewportContainer" parent="HBox/CharacterVBox"]
+margin_right = 300.0
+margin_bottom = 300.0
+
+[node name="Viewport" type="Viewport" parent="HBox/CharacterVBox/VPCont"]
+size = Vector2( 300, 300 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Sprite" type="Sprite" parent="HBox/CharacterVBox/VPCont/Viewport"]
+
+[node name="Camera2D" type="Camera2D" parent="HBox/CharacterVBox/VPCont/Viewport/Sprite"]
+current = true
+
+[node name="CharNameLabel" type="Label" parent="HBox/CharacterVBox"]
+margin_top = 304.0
+margin_right = 300.0
+margin_bottom = 331.0
+custom_fonts/font = ExtResource( 2 )
+text = "Character Name"
+
+[node name="CharDescLabel" type="Label" parent="HBox/CharacterVBox"]
+margin_top = 335.0
+margin_right = 300.0
+margin_bottom = 362.0
+custom_fonts/font = ExtResource( 3 )
+text = "Char Description"

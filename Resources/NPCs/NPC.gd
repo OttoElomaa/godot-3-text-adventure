@@ -3,6 +3,7 @@ extends Resource
 class_name NPC
 
 
+export (Texture) var npc_portrait = null
 export (String) var npc_name = "NpcName"
 export (String, MULTILINE) var npc_description = "NpcName"
 

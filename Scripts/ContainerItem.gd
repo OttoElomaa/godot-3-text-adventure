@@ -4,37 +4,45 @@ class_name ItemContainer
 
 
 var items = []
-
-
+var container_types = null
 
 #class_name ItemContainer
 
-export var item_id = "useless-id"
-export (String) var item_name = "Container Name"
-#export (String) var type = "Container Type"
-export (Types.ContainerTypes) var type = Types.ContainerTypes.CHEST
 export (Resource) var type_resource = null
-export (String, MULTILINE) var description = "Container Description"
 
-#export (Array, String) var item_strings = []
-export (String) var items_string = ""
+var type = Types.ContainerTypes.CHEST
+
+var item_name: String = "Container Name"
+var item_id = "useless-id"
+
+
+var description: String = "Container Description"
+var items_string: String = ""
 
 
 func _ready():
 	
-	give_properties(type_resource)
+	pass
+	#get_items_from_list()
+
+
+func setup(resource):
+	
+	give_properties(resource)
 	
 	call_deferred("get_items_from_list")
-	#get_items_from_list()
 
 
 
 func give_properties(resource):
 	
 	item_name = resource.item_name
+	item_id = resource.item_id
 	type = resource.type
 	description = resource.description
 	
+	container_types = resource.Containers
+	items_string = resource.items_string
 	
 	#match type:
 		#"chest":
@@ -43,18 +51,30 @@ func give_properties(resource):
 
 func get_items_from_list():
 	
+	
+	#### GET LIST OF ALL ITEMS
 	var root = DataScene.get_game_root()
 	var items = root.get_node("FileReader").read_items_file_to_list()
 	
-	if items_string == "":
-		return
+	#### GET MY ITEMS (IN CHEST)
+	var my_items = items_string
+	if my_items == "":
+		return	
 		
-	var strings = items_string.split(",")
-	for item_str in strings:
-		
+	var strings = my_items.split(",")
+	
+	
+	#### MATCH THEM TOGETHER
+	for stri in strings:
 		for item in items:
-			if item_str == item.item_id:
+			
+			if stri == item.item_id:
 				self.add_child(item)
+
+
+func remove_item(item):
+	
+	remove_child(item)
 
 
 func printout():

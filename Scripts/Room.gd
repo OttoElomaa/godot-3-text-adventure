@@ -4,6 +4,7 @@ class_name GameRoom
 
 
 onready var ItemScene = load("res://ScenesMisc/ItemScene.tscn")
+onready var ContainerScene = load("res://Scenes/ItemContainer.tscn")
 
 ######################################
 
@@ -32,24 +33,17 @@ var items: Array = []
 var room_character = null
 
 export (bool) var has_combat = false
+var encounter: Control = null
 
 
-func _ready():
-	
-	for node in get_children():
-		
-		if node.is_in_group("containers"):
-			
-			items.append(node)
-	
-	#### Throw em in the Containers sub-node		
-	add_containers()
-			
+
+				
 
 func set_room_name(name_input: String):
 	
 	room_name = name_input
 	$Margins/Scroll/Rows/RoomName.text = name_input
+	
 	
 	
 func set_room_description(desc_input: String):
@@ -65,10 +59,12 @@ func connect_exit_normal(direction: String, room, exit_type):
 	add_exit_type(direction,exit_type)
 
 
+
 func connect_exit_locked(direction: String, room, exit_type):
 	
 	_connect_exit(direction, room, true)
 	add_exit_type(direction,exit_type)
+
 
 
 func _connect_exit(direction: String, room, is_locked: bool = false):
@@ -135,6 +131,7 @@ func create_room_description() -> String:
 	return room_string
 	
 
+
 #### Called in COMMANDPARSER -> Change_Room?
 func create_npc_description() -> String:
 	
@@ -165,12 +162,21 @@ func create_pool_string(array: Array, delienator: String):
 
 func add_containers():
 	
-	for child in get_children():
-		if child.has_method("i_am_a_container"):
-			
-			remove_child(child)
-			$Items.add_child(child)
+	if type == Types.RoomTypes.BEDROOM:
+		
+		var container_res = load("res://Resources/Containers/Chest.tres")
+		var container = ContainerScene.instance()
+		
+		$Items.add_child(container)
+		container.setup(container_res)
+		
+
+
+func add_encounter(enc):
 	
+	self.encounter = enc
+
+
 
 func get_items():
 	

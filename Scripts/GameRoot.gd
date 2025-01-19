@@ -15,17 +15,24 @@ onready var text_window = $MainPanel/MarginContainer/Horizontal/TextWindow
 func _ready():
 	
 	
+	yield(get_tree().create_timer(0.1), "timeout")
+	
+	current_zone = $Zone
+	starting_room = current_zone.first_room
+	
+	command_parser.setup(starting_room, $Inventory)
+	
+	
+	current_zone.setup()	
+	
 	#### Get ZONE, child of zone HANDLER -> not anymore bucko
 	#### I reckoned, Zone is just abstraction of some Rooms -> same as ZoneHandler would be
-	current_zone = $Zone
-	starting_room = current_zone.get_node("Room")
 	
 	hide_combat_screen()
 	
 	var test_name = starting_room.room_name
 	
 	#### Custom SETUP functions
-	command_parser.setup(starting_room, player)
 	text_window.setup()
 	text_window.start_game( starting_room )
 	

@@ -1,10 +1,12 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/NPCs/NPC.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/dialogue-face-elf.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-npc_name = "Anecea Sliverleaves"
+npc_portrait = ExtResource( 2 )
+npc_name = "Aneka Findpaths"
 npc_description = "an elven explorer"
 npc_keywords = "you,me,give,grant,house,hamlet"
 greeting_line = "Oh, hi! I was just exploring this house! What a weird place!"

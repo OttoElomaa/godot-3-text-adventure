@@ -5,7 +5,7 @@
 [ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://BackgroundResources/TextWindowViolet.tres" type="StyleBox" id=5]
-[ext_resource path="res://Scenes/Combat2D.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/CombatScreen/Combat2D.tscn" type="PackedScene" id=6]
 
 [node name="CombatScreen" type="HBoxContainer"]
 margin_left = 20.0
@@ -73,6 +73,7 @@ size_flags_vertical = 3
 size = Vector2( 700, 400 )
 size_override_stretch = true
 handle_input_locally = false
+hdr = false
 usage = 0
 render_target_update_mode = 3
 
