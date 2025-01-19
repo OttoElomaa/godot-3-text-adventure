@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Rooms/RoomMeadow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Zones/HamletZone.gd" type="Script" id=2]
+
+[node name="HamletZone" type="Control"]
+script = ExtResource( 2 )
+zone_name = "the Hamlet of Oakwood"
+
+[node name="Meadow2" parent="." instance=ExtResource( 1 )]
+margin_left = 219.0
+margin_top = -248.0
+margin_right = 619.0
+margin_bottom = -48.0
+room_name = "a Cool Meadow"
+room_description = "You stroll through a grassy meadow. You feel a cool breeze flowing from uphill."
+
+[node name="Meadow1" parent="." instance=ExtResource( 1 )]
+margin_left = -275.0
+margin_top = -253.0
+margin_right = 125.0
+margin_bottom = -53.0

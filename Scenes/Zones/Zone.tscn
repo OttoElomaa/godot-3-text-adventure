@@ -1,0 +1,78 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Zone.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Rooms/InheritTestRoom.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Rooms/RoomHallway.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Rooms/RoomShrine.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Rooms/ZoneSwitchRoom.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Rooms/RoomCave.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ScenesMisc/CombatEncounter.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Sprites/room-icon-basic.png" type="Texture" id=9]
+
+[node name="Zone" type="Control"]
+script = ExtResource( 2 )
+zone_name = "Mysterious House"
+
+[node name="Room" parent="." instance=ExtResource( 1 )]
+margin_left = 35.0
+margin_top = 587.0
+margin_right = 435.0
+margin_bottom = 787.0
+room_name = "Your Room"
+room_description = "This is a normal bedroom. You know you've lived here, though you don't remember it."
+room_icon = ExtResource( 9 )
+
+[node name="Hallway1" parent="." instance=ExtResource( 4 )]
+margin_left = 478.0
+margin_top = 590.0
+margin_right = 878.0
+margin_bottom = 790.0
+
+[node name="CustomRoom" parent="." instance=ExtResource( 3 )]
+margin_left = 482.0
+margin_top = 347.0
+margin_right = 882.0
+margin_bottom = 547.0
+room_name = "a White Room"
+room_description = "A white room with black curtains."
+has_custom_text = true
+
+[node name="Shrine1" parent="." instance=ExtResource( 5 )]
+margin_left = 932.0
+margin_top = 591.0
+margin_right = 1332.0
+margin_bottom = 791.0
+room_id = 1111
+room_description = "A temple room with lit candles adorning an altar of stone. The wooden statues seem to depict horrible elder gods."
+
+[node name="SwitchRoom" parent="." instance=ExtResource( 6 )]
+margin_left = 474.0
+margin_top = 844.0
+margin_right = 874.0
+margin_bottom = 1044.0
+switch_to_room = "Meadow1"
+
+[node name="Cave1" parent="." instance=ExtResource( 7 )]
+margin_left = 969.0
+margin_top = 814.0
+margin_right = 1369.0
+margin_bottom = 1014.0
+
+[node name="EvilCave" parent="." instance=ExtResource( 7 )]
+margin_left = -422.0
+margin_top = 583.0
+margin_right = -22.0
+margin_bottom = 783.0
+room_name = "an Evil Cave"
+has_combat = true
+
+[node name="CombatEncounter" parent="EvilCave" instance=ExtResource( 8 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 393.0
+margin_bottom = 193.0

@@ -1,0 +1,86 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Scenes/TextWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/VisualPanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/CommandParser.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/GameRoot.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Zones/Zone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Zones/HamletZone.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/CombatScreen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Battlers/Battler.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Resources/Enemies/Player.tres" type="Resource" id=10]
+[ext_resource path="res://Resources/Enemies/Dog.tres" type="Resource" id=11]
+[ext_resource path="res://ScenesMisc/FileReader.tscn" type="PackedScene" id=12]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0862745, 0.0941176, 0.113725, 1 )
+
+[node name="GameRoot" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 1300, 800 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 4 )
+
+[node name="Party" type="Node" parent="."]
+
+[node name="Player" parent="Party" instance=ExtResource( 6 )]
+battler_resource = ExtResource( 10 )
+entity_name = "Player"
+
+[node name="Dog" parent="Party" instance=ExtResource( 9 )]
+battler_resource = ExtResource( 11 )
+entity_name = "Dog"
+is_enemy = false
+
+[node name="Zone" parent="." instance=ExtResource( 5 )]
+anchor_left = -0.059
+anchor_top = -1.09
+anchor_right = -0.059
+anchor_bottom = -1.09
+margin_left = 176.7
+margin_top = -328.0
+margin_right = 176.7
+margin_bottom = -328.0
+
+[node name="HamletZone" parent="." instance=ExtResource( 7 )]
+margin_top = -1500.0
+margin_bottom = -1500.0
+
+[node name="MainPanel" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPanel"]
+margin_right = 1300.0
+margin_bottom = 800.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="Horizontal" type="HBoxContainer" parent="MainPanel/MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1280.0
+margin_bottom = 780.0
+custom_constants/separation = 20
+
+[node name="TextWindow" parent="MainPanel/MarginContainer/Horizontal" instance=ExtResource( 1 )]
+margin_right = 620.0
+margin_bottom = 760.0
+
+[node name="VisualPanel" parent="MainPanel/MarginContainer/Horizontal" instance=ExtResource( 2 )]
+margin_left = 640.0
+margin_right = 1260.0
+margin_bottom = 760.0
+
+[node name="CombatScreen" parent="MainPanel/MarginContainer" instance=ExtResource( 8 )]
+visible = false
+
+[node name="FileReader" parent="." instance=ExtResource( 12 )]
+
+[node name="CommandParser" parent="." instance=ExtResource( 3 )]

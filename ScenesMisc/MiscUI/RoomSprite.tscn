@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/RoomSprite.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/templewall-transparent-32px.png" type="Texture" id=2]
+
+[node name="RoomSprite" type="Sprite"]
+texture = ExtResource( 2 )
+script = ExtResource( 1 )

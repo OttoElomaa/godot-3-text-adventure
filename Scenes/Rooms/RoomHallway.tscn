@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/room-icon-hallway.png" type="Texture" id=2]
+
+[node name="Room" instance=ExtResource( 1 )]
+room_name = "a Hallway"
+room_description = "A furnished hallway, connecting rooms to each other. Soft torchlight dances on the walls."
+room_icon = ExtResource( 2 )
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "a Hallway"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+margin_bottom = 134.0
+text = "A furnished hallway, connecting rooms to each other. Soft torchlight dances on the walls."

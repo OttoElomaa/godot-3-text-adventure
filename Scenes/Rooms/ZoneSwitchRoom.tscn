@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+
+[node name="SwitchRoom" instance=ExtResource( 1 )]
+room_name = "Zone Switch Room"
+room_description = "This room switches zones."
+switch_to_zone = "HamletZone"
+type = 0
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "Zone Switch Room"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+text = "This room switches zones."

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Topics/Topic.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+topic_text = "This is the Hamlet of Oaktown. It's a peaceful place, close to the City, protected by the Queen's grace."
+topic_keywords = "hamlet,city,queen"

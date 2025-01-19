@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/cave-icon.png" type="Texture" id=2]
+
+[node name="RoomCave" instance=ExtResource( 1 )]
+room_name = "a Cave"
+room_description = "A misty cavern with painted rock walls. The air feels heavy under the earth."
+room_icon = ExtResource( 2 )
+type = 3
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "a Cave"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+margin_bottom = 134.0
+text = "A misty cavern with painted rock walls. The air feels heavy under the earth."

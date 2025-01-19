@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/NPCs/NPC.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+npc_name = "Anecea Sliverleaves"
+npc_description = "an elven explorer"
+npc_keywords = "you,me,give,grant,house,hamlet"
+greeting_line = "Oh, hi! I was just exploring this house! What a weird place!"
+greeting_keywords = "house"
+can_grant = true
+can_receive = true
+grant_item_id = ""
+receive_item_id = ""
+give_dialogue = "I'm looking for the bone of the elven ancestor, Valus. If you can find it for me, I'll give you my key, so you can exit this house at will. I need to stay behind, to explore."
+post_quest_dialogue = "Hello! You complete quest."

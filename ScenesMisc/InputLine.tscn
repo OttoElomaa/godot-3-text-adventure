@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scripts/InputLine.gd" type="Script" id=2]
+
+[node name="InputLine" type="LineEdit"]
+margin_left = 40.0
+margin_right = 482.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+max_length = 20
+script = ExtResource( 2 )
+
+[connection signal="text_entered" from="." to="." method="_on_InputLine_text_entered"]

@@ -1,0 +1,8 @@
+# info: item_id, item_name, item_type, use_value (food, heal, damage etc), sell_price
+
+# key: it's USE VALUE is the corresponding room's room_id (int)
+
+#items
+bread-loaf,Loaf of Bread,food,5,2
+venison,Cut of Venison,food,10,5
+key,Iron Key,key,1111,0

@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/ItemContainer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Sprites/room-icon-basic.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Types/Chest.tres" type="Resource" id=4]
+
+[node name="Room" instance=ExtResource( 1 )]
+room_name = "A white room"
+room_description = "You are in a white room with black curtains."
+room_icon = ExtResource( 3 )
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "A white room"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+margin_bottom = 104.0
+text = "You are in a white room with black curtains."
+
+[node name="Chest" parent="." index="4" instance=ExtResource( 2 )]
+type_resource = ExtResource( 4 )
+items_string = "bread-loaf,venison"

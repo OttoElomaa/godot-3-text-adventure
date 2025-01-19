@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+
+[node name="Room" instance=ExtResource( 1 )]
+room_name = "a Shrine"
+room_description = "A temple room with lit candles adorning an altar of stone. "
+type = 5
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "a Shrine"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+margin_bottom = 98.0
+text = "A temple room with lit candles adorning an altar of stone. "

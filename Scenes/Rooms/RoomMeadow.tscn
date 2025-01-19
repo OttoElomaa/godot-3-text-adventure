@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+
+[node name="RoomMeadow" instance=ExtResource( 1 )]
+room_name = "a Meadow"
+room_description = "You stroll through a grassy meadow. You are surrounded by the lush trees and rolling hills of the countryside."
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "a Meadow"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+margin_bottom = 164.0
+text = "You stroll through a grassy meadow. You are surrounded by the lush trees and rolling hills of the countryside."

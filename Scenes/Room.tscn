@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/Room.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/LightFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Sprites/knight-32px.png" type="Texture" id=4]
+
+[node name="Room" type="PanelContainer" groups=["rooms"]]
+margin_right = 14.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 400, 200 )
+script = ExtResource( 1 )
+room_icon = ExtResource( 4 )
+
+[node name="Margins" type="MarginContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 393.0
+margin_bottom = 193.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="Scroll" type="ScrollContainer" parent="Margins"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 381.0
+margin_bottom = 181.0
+scroll_horizontal_enabled = false
+
+[node name="Rows" type="VBoxContainer" parent="Margins/Scroll"]
+margin_right = 376.0
+margin_bottom = 176.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="RoomName" type="Label" parent="Margins/Scroll/Rows"]
+margin_right = 376.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+
+[node name="RoomDescription" type="Label" parent="Margins/Scroll/Rows"]
+margin_top = 47.0
+margin_right = 376.0
+margin_bottom = 74.0
+custom_fonts/font = ExtResource( 3 )
+autowrap = true
+
+[node name="Containers" type="Node" parent="."]
+
+[node name="Items" type="Node" parent="."]
+
+[node name="Node3" type="Node" parent="."]
