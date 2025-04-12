@@ -45,7 +45,7 @@ var current_input_num = null
 #### Manage INPUT state with this
 enum States {
 	
-	NONE, ITEMS, SKILLS, VICTORY, PICK_NUM
+	NO_ACTION, NONE, ITEMS, SKILLS, VICTORY, PICK_NUM
 }
 
 enum Situations {
@@ -66,6 +66,11 @@ var debug_key1 = null
 
 func setup_and_fight(room):
 	
+	current_room = room
+	encounter = current_room.encounter
+	
+	combat_2d.setup(encounter)
+	
 	dict_inputs["menu_1"] = 1
 	dict_inputs["menu_2"] = 2
 	dict_inputs["menu_3"] = 3
@@ -78,8 +83,7 @@ func setup_and_fight(room):
 	
 	
 	
-	current_room = room
-	encounter = current_room.encounter
+	
 	
 	#### The cast of battlers
 	var enemy_tab = $Middle/Enemies
@@ -94,21 +98,19 @@ func setup_and_fight(room):
 	setup_allies()
 	setup_enemies(encounter)
 	
-	#### SETUP Enemy 2D SPRITES
 	
+	#### SETUP Enemy 2D SPRITES
 	var sprite_count = 0
 	var sprites = combat_2d.get_enemy_sprites()
-	
 	for spr in sprites:
 		spr.hide()
 		
-	#### SET UP DICTIONARY TO PAIR ENEMIES WITH SPRITES
-	for enemy in enemy_group:
-		#### PUT IN DICT
-		dict_enemies_and_sprites[enemy] = sprites[sprite_count]
 		
+	#### SET UP DICTIONARY TO PAIR ENEMIES WITH SPRITES. PUT IN DICT
+	for enemy in enemy_group:
+		dict_enemies_and_sprites[enemy] = sprites[sprite_count]
+		#### AND SETUP
 		sprites[sprite_count].get_node("Sprite").texture = enemy.texture
-		#sprites[sprite_count].get_node("Sprite").scale = Vector2(1.8, 1.8)
 		sprites[sprite_count].show()
 		sprite_count += 1
 		
@@ -132,37 +134,44 @@ func fight_battle():
 	#### TURN SYSTEM
 	while combat_ended == false:
 		
-		#### HANDLE STATUS AND COOLDOWNS
+		
+		#### STATUS AND COOLDOWNS
+		#### COUNT DOWN BY ONE TURN. NO OTHER EFFECT
 		for battler in battlers:
-			if combat_ended == false:
+			if not combat_ended:
 				battler.handle_counters()
-				#battler.handle_status()
+		
 			
 		#### LOOP through list of all BATTLERS
 		for battler in battlers:
-			if combat_ended == false:
+			combat_state = States.NO_ACTION
+			if not combat_ended:
 				
-				current_character = battler # WHAAATTTT
+				#current_character = battler # WHAAATTTT
 				var is_enemy : bool = play_battler(battler, battlers)
 				
+				#### PLAYER ACTIONS
 				if not is_enemy:
-					yield(self, "player_character_finished_turn")
+					if not battler.check_is_stunned():
+						combat_state = States.NONE
+						yield(self, "player_character_finished_turn")
+				#### PLAYER ACTIONS END
 				
-				#### ATTEMPT TO FIX COUNTER BUG WITH TIMER
-				#yield(get_tree().create_timer(0.01), "timeout")
-				
-				for battler2 in battlers:
-					battler2.update_resource_bars()
 				
 				#### END COMBAT	
 				if enemy_group.size() == 0:
 					combat_ended = true
 			
+			#### WAIT FOR ENEMY ACTION ANIMATIONS TO PLAY OUT - SEE ENEMY2D.TSCN
 			if battler.is_enemy:
 				yield(self, "any_animation_has_ended")
+		
+		#### APPLY STATUS EFFECTS AT END OF TURN
+		for battler in battlers:
+			battler.status_handler.apply_status_visual()
+			battler.status_handler.apply_status_at_turn_end()
 			
 		handle_combat_output("_____", Color.wheat)
-	
 	
 	#### WHEN Combat ENDS	
 	combat_state = States.VICTORY
@@ -173,33 +182,23 @@ func fight_battle():
 
 func play_battler(battler: Battler, battlers: Array) -> bool:
 	
-	#handle_combat_output("\n" + battler.entity_name + " takes its turn!", Color.white)
-	
 	var is_enemy := false
-	
-	#### IDK. TEST IF NULL?
-	if battler == null:
-		assert(1 == 2)
-		return is_enemy
-	
 	print(battler.entity_name)
 	
 	#### TRY TO run PLAY_TURN function, to run ENEMY AI via BEHAVIOR Tree
-	is_enemy = battler.play_turn()	
-	
 	#### IF Battler is ALLY, then you can CONTROL it
+	is_enemy = battler.play_turn()	
 	if not is_enemy:
 		current_character = battler
 		
-	
+		
 	#### AFTER, UPDATE all player health bars visuals
-	#if enemy_group.size() > 0:
 	update_battlers_visuals(battlers)
 	info_rows.wipe_history()
 	
-	
 	#### Return the BOOLEAN to send info about, is it player turn or not
 	return is_enemy
+	
 	
 
 func handle_combat_output(text, color) -> void:		
@@ -207,21 +206,27 @@ func handle_combat_output(text, color) -> void:
 	combat_log.handle_adding_message(text, color)
 	
 	
+	
 func handle_combat_info(text, color) -> void:
 	
 	info_rows.wipe_history()
 	info_rows.handle_adding_message(text, color)
+
+
 
 func add_combat_info_row(text, color) -> void:
 
 	info_rows.handle_adding_message(text, color)
 
 
-
+#### FOR BATTLERINFOPANEL.TSCN
 func update_battlers_visuals(battlers: Array) -> void:
 	
+	#### For EACH Battler, update HEALTH ETC, and STATUS Text
 	for battler in battlers:
 		battler.update_resource_bars()
+		battler.status_handler.apply_status_visual()
+	
 	
 	
 func end_player_action():
@@ -233,8 +238,8 @@ func end_player_action():
 
 func _unhandled_key_input(event):
 	
-	#if input_is_ongoing:
-		#return
+	if combat_state == States.NO_ACTION:
+		return
 	
 	#### IF IN COMBAT, Process this Input
 	var parser = DataScene.get_command_parser()
@@ -269,6 +274,9 @@ func check_key(key_name):
 
 
 func process_command_combat():
+
+	if combat_state == States.NO_ACTION:
+		return
 
 	var game_root = DataScene.get_game_root()
 	
@@ -305,12 +313,18 @@ func process_command_combat():
 
 func process_command_items():
 	
+	if combat_state == States.NO_ACTION:
+		return
+	
 	handle_combat_output("AAAAAAAHHHHHHH", Color.cornflower)
 	call_deferred("end_player_action")
 	
 	
 	
 func process_command_skills():
+	
+	if combat_state == States.NO_ACTION:
+		return
 	
 	var skills_count = current_character.skills.get_child_count()
 	var selected_num = null

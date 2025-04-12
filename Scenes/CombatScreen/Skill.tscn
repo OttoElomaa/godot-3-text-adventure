@@ -3,9 +3,9 @@
 [ext_resource path="res://Scripts/SkillNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/beehave/nodes/beehave_root.gd" type="Script" id=2]
 [ext_resource path="res://addons/beehave/nodes/composites/selector.gd" type="Script" id=3]
-[ext_resource path="res://addons/beehave/nodes/composites/sequence.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/BeehaveAI/SkillAttack.gd" type="Script" id=4]
+[ext_resource path="res://addons/beehave/nodes/composites/sequence.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/BeehaveAI/DodgeCheck.gd" type="Script" id=6]
-[ext_resource path="res://Scripts/BeehaveAI/SkillAttack.gd" type="Script" id=7]
 
 [node name="Skill" type="Node"]
 script = ExtResource( 1 )
@@ -17,10 +17,10 @@ script = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="Sequence1" type="Node" parent="BeehaveRoot/Selector"]
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="DodgeCheck" type="Node" parent="BeehaveRoot/Selector/Sequence1"]
 script = ExtResource( 6 )
 
 [node name="UseSkill" type="Node" parent="BeehaveRoot/Selector"]
-script = ExtResource( 7 )
+script = ExtResource( 4 )

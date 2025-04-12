@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Enemies/BaseBattler.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/enemy-rat-transparent-32px.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/enemy-rat-v2.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )

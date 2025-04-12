@@ -67,10 +67,14 @@ func handle_adding_message(message_text: String, color):
 #func add_general_message(output_message: Control):
 	#pass
 
+#### HELPER FUNC FOR ABOVE
 func add_output_message(row: Control):
 	
 	history_rows.add_child(row)
 	delete_excess_history()
+
+
+
 
 	
 	

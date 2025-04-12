@@ -5,39 +5,33 @@ const WoodenDoor = preload("res://Resources/Types/WoodenDoor.tres")
 const MetalDoor = preload("res://Resources/Types/ExitMetalDoor.tres")
 const Passage = preload("res://Resources/Types/ExitPassage.tres")
 
+export (String) var zone_id = "000"
 export (String) var zone_name = "Zone Name"
 
+export (Texture) var zone_background = null
+export (Texture) var zone_map_room_icon = null
+
+
+onready var first_room = $Rooms/Meadow1
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func setup():
 	
-	$Meadow1.connect_exit_normal("east", $Meadow2, Passage)
+	$Rooms/Meadow1.connect_exit_normal("east", $Rooms/Meadow2, Passage)
 	
-	"""
-	$Room.connect_exit_normal("east", $Hallway1)
-	$Room.add_exit_type("east", WoodenDoor)
+	$Rooms/Meadow1.connect_exit_normal("north", $Rooms/CombatHub, Passage)
 	
-	$Hallway1.connect_exit_normal("north", $CustomRoom)
-	$Hallway1.add_exit_type("north", Passage)
-	
-	#### TEST SHIT REMOVE
-	$CustomRoom.connect_exit_normal("north", $HallTest2)
-	$Shrine1.connect_exit_normal("east", $HallTest3)
-	
-	$Hallway1.connect_exit_locked("east", $Shrine1)
-	$Hallway1.add_exit_type("east", MetalDoor)
-	
-	var key_1 = load("res://Resources/ItemKey.tres")
-	key_1.use_value = $Shrine1
-	#### NOTE: Putting it here now for testing, please put it in CustomRoom later
-	$Hallway1.add_item(key_1)
-	
-	var npc_elf = load("res://Resources/NPCs/ElfExplorer.tres")
-	$CustomRoom.add_npc(npc_elf)
-	"""
+	$Rooms/CombatHub.connect_exit_normal("north", $Rooms/Shore3, Passage)
+	$Rooms/CombatHub.connect_exit_normal("west", $Rooms/Shore2, Passage)
+	$Rooms/CombatHub.connect_exit_normal("east", $Rooms/Shore4, Passage)
 	
 	
-	
-	
+	#### ENCOUNTER
+	$Rooms/Shore2.add_encounter($Encounters/Bandit1)
 	
 
+
+
+func get_room(input:String) -> Node:
+	return $Rooms.get_node(input)
 

@@ -4,13 +4,14 @@ class_name Battler
 
 signal battler_finished_turn
 
-onready var SkillScene = preload("res://Scenes/Skill.tscn")
+onready var SkillScene = preload("res://Scenes/CombatScreen/Skill.tscn")
 
 onready var SkillStrike = preload("res://Resources/Skills/Strike.tres")
 
 onready var SkillStrongStrike = preload("res://Resources/Skills/StrongStrike.tres")
 onready var SkillFirstAid = preload("res://Resources/Skills/FirstAid.tres")
 onready var SkillBite = preload("res://Resources/Skills/Bite.tres")
+onready var SkillStun = preload("res://Resources/Skills/StunStrike.tres")
 
 
 export (Resource) var battler_resource = null
@@ -42,18 +43,24 @@ var target = null
 
 
 func _ready():
-	
 	set_stats_from_resource()
 	
 
-func set_as_ally():
+
+#### Here: Distinction BETWEEN Player and Not Player (Enemy)
+func play_turn():
 	
+	if is_enemy:
+		$BeehaveRoot.tick(1)
+	return is_enemy		
+
+
+
+func set_as_ally():
 	is_enemy = false
 
 
-func check_stunned():
 	
-	return is_stunned	
 	
 	
 func set_stats_from_resource():
@@ -90,6 +97,7 @@ func set_stats_from_resource():
 	var mob_type = stat_resource.mob_type
 	var mob_sub_type = stat_resource.mob_sub_type
 	set_skills(mob_type, mob_sub_type, stat_resource)
+		
 			
 
 func set_skills(mob_type, mob_sub_type, stat_resource):
@@ -109,6 +117,7 @@ func set_skills(mob_type, mob_sub_type, stat_resource):
 			create_skill_node(SkillStrike)
 			create_special_skill(SkillStrongStrike)
 			create_special_skill(SkillFirstAid)
+			create_special_skill(SkillStun)
 	
 	
 	match mob_sub_type:
@@ -119,6 +128,11 @@ func set_skills(mob_type, mob_sub_type, stat_resource):
 		
 		sub_type_enum.Vermin:
 			create_special_skill(SkillBite)
+			
+		sub_type_enum.Reaver:
+			create_special_skill(SkillStrongStrike)
+			create_special_skill(SkillStun)
+			
 
 func get_skills():
 	return skills.get_children()
@@ -142,11 +156,6 @@ func create_special_skill(resource):
 
 
 
-#### Here: Distinction BETWEEN Player and Not Player (Enemy)
-func play_turn():
-	
-	$BeehaveRoot.tick(1)
-	return is_enemy		
 
 
 
@@ -159,7 +168,7 @@ func add_status_counter(skill):
 	status_handler.add_status_counter(skill)
 	
 
-
+#### COUNT DOWN BY ONE TURN. NO OTHER EFFECT
 func handle_counters():
 	
 	status_handler.play_counters_turn()
@@ -190,6 +199,14 @@ func get_cooldown_duration(skill: Node) -> int:
 
 
 
+func check_is_stunned():
+	
+	if status_handler.check_is_stunned():
+		combat.handle_combat_output("\n%s can't act due to being Stunned" % self.entity_name, Color.lightsalmon)
+		return true
+	return false
+
+
 
 #### YOU TAKE DAMAGE
 func handle_damage():
@@ -212,8 +229,9 @@ func remove_battler():
 		combat.dict_enemies_and_sprites[self].hide()
 		combat.enemy_group.erase(self)
 		combat.dead_enemy_list.append(self)
-		
-	battler_info_panel.queue_free()
+	
+	if is_instance_valid(battler_info_panel):
+		battler_info_panel.queue_free()
 	
 
 	
@@ -223,11 +241,33 @@ func update_resource_bars():
 	
 
 
+func deal_indirect_damage(target, damage):
+	
+	target.stats.health -= damage
+	target.handle_damage()
+	
+
 
 func play_anim_attack():
 	combat.dict_enemies_and_sprites[self].play_anim_attack()
 
 
+
 func play_anim_hurt():
 	combat.dict_enemies_and_sprites[self].play_anim_hurt()
+	
+	
+
+func emit_turn_end_signal():
+	yield(get_tree().create_timer(0.05),"timeout")
+	combat.emit_combat_ended()
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	

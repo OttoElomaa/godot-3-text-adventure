@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://Resources/NPCs/NPC.gd" type="Script" id=1]
+[ext_resource path="res://Resources/NPCs/BaseNPC.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/dialogue-face-elf.png" type="Texture" id=2]
 
 [resource]

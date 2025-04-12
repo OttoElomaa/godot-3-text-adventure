@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Quests/BaseQuest.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+quest_id = "elfbonequest"
+quest_name = "Ancient Bone"
+quest_text = "I'm looking for the bone of the elven ancestor, Valus. If you can find it for me, I'll give you my key, so you can exit this house at will. I need to stay behind, to explore."
+completion_text = "You found the bone! My whole clan owes you one. For now, as promised, the house exit key."
+give_item_id = "elfbone"
+receive_item_id = "exit-key"

@@ -49,7 +49,6 @@ func process_command_explore(input):
 	
 	current_room = parser.current_room
 	
-	parser.split_word(input)
 	var first_word = parser.first_word
 	var second_word = parser.second_word
 	
@@ -60,7 +59,7 @@ func process_command_explore(input):
 	match first_word:
 		
 		"go", "walk", "w":
-			response = go(input, second_word)
+			response = $Go.go(input, second_word, parser)
 			
 		"hail", "h", "speak", "talk",  "salute", "s":
 			return hail(first_word)
@@ -68,7 +67,7 @@ func process_command_explore(input):
 		#"fight", "f":
 			#return fight()
 				
-		"take", "t", "get", "g":
+		"take", "t", "get", "g", "pick":
 			return take(second_word)
 			
 		"use", "u":
@@ -83,55 +82,28 @@ func process_command_explore(input):
 		"help":
 			response = help()
 			
-		"hide":
+		"hide","close":
 			
 			response = hide()
 			
+		"warp":
+			return warp(second_word)
+			
 		
 			
-		"inventory", "inv":
-			return inventory()	
+		"inventory", "inv", "items":
+			return inventory()
+			
+		"quest", "quests", "log", "journal":
+			return quest_log()
+			
 			
 	return response 
 
 
 
 
-func go(input, second_word: String) -> String:
-	
-	
-	
-	#### ALLOW redirects from shorthands
-	match second_word:
-		"s":
-			second_word = "south"
-		"n":
-			second_word = "north"
-		"e":
-			second_word = "east"
-		"w":
-			second_word = "west"
-	
-	#### No SECOND word
-	if second_word.empty():
-		return "Insert second word (direction) to walk."
-	
-	#### VALID second word	
-	elif current_room.exits.keys().has(second_word):
-		
-		var exit = current_room.exits[second_word]
-		
-		if exit.check_is_other_room_locked(current_room):
-			return "You find the entrance to be locked!"
-		else:
-			text_window.create_custom_row(input, "You walk %s!" % second_word)
-			parser.change_room( exit.get_other_room(current_room) )
-			
-			return ""
-	
-	#### INVALID second word	
-	else:
-		return "Invalid direction to walk."
+
 		
 
 func hail(input) -> String:
@@ -315,7 +287,18 @@ func use_key(item):
 
 func inventory() -> String:
 	
+	visual_panel.display_alt_panel()
+	visual_panel.display_inventory()
 	return player.create_inventory_string()
+
+
+
+func quest_log() -> String:
+	
+	visual_panel.display_quest_log()
+	return "Showing quest log."
+
+
 
 
 func help():
@@ -328,12 +311,25 @@ func help():
 	
 func hide():
 	
+	visual_panel.hide_other_alt_screens(null)
 	visual_panel.hide_alt_panel()
-	visual_panel.hide_help()
-	return "Help hidden."
+	
+	return "Info screens hidden."
 
 
 
+
+func warp(second_word):
+	
+	
+	match second_word:
+		
+		"1":
+			var zone = game_root.get_zone("Zone")
+			parser.debug_go_to_zone_and_room(zone, zone.get_room("Antechamber"))
+			return "Warp completed."
+			
+	return "Warp failed."
 
 
 

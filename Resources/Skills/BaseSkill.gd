@@ -34,3 +34,4 @@ export (bool) var has_status_effect = false
 export (StatusEffects) var status_effect = StatusEffects.NONE
 export (String) var status_effect_str = "StatusEffect" 
 export (int) var status_duration = 0
+export (int) var status_amount = 0

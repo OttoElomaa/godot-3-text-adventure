@@ -33,8 +33,9 @@ func setup(id, name, type, use_v, price):
 	
 func print_to_string():
 	
-	print("ITEM: \n" + item_id + ":")
+	print("ITEM: " + item_id)
 	print("" + item_name)
 	print("" + item_type)
 	print("" + str(use_value))
 	print("" + str(sell_price))
+	print("")

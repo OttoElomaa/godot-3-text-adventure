@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Skills/BaseSkill.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+skill_name = "Stunning Blow"
+description = "Melee physical attack with stun effect."
+targeting = 1
+skill_type = 0
+damage = 10
+healing = 0
+cooldown = 0
+time_cost = 0
+has_status_effect = true
+status_effect = 2
+status_effect_str = "Stun"
+status_duration = 1
+status_amount = 0

@@ -193,6 +193,9 @@ func get_items():
 	return $Items.get_children()
 
 
+func has_exit(exit_str: String) -> bool:
+	
+	return exits.keys().has(exit_str)
 
 
 

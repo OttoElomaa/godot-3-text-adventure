@@ -84,7 +84,10 @@ func remove_counter_from_list(list):
 			
 	return temp_list.duplicate()
 		
-		
+
+
+func get_status_enum():
+	return skill.enum_status_effects		
 		
 		
 func cooldown_turn():

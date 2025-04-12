@@ -6,8 +6,13 @@ const MetalDoor = preload("res://Resources/Types/ExitMetalDoor.tres")
 const Passage = preload("res://Resources/Types/ExitPassage.tres")
 
 onready var ItemScene := preload("res://ScenesMisc/ItemScene.tscn")
+onready var QuestScene := preload("res://ScenesMisc/QuestScene.tscn")
 
+export (String) var zone_id = "000"
 export (String) var zone_name = "Zone Name"
+
+export (Texture) var zone_background = null
+export (Texture) var zone_map_room_icon = null
 
 
 onready var first_room = $Rooms/Room
@@ -60,7 +65,7 @@ func setup():
 	hallway1.add_item_scene(key2)
 	
 	var bone = DataScene.get_file_reader().get_item_by_id("elfbone")
-	shrine.add_item_scene(bone)
+	hallway1.add_item_scene(bone)
 	
 	#### DEBUG
 	var key3 = DataScene.get_file_reader().get_item_by_id("exit-key")
@@ -68,18 +73,26 @@ func setup():
 	
 	#### NPCS
 	
-	var npc_elf = load("res://Resources/NPCs/ElfExplorer.tres")
-	white_room.add_npc(npc_elf)
+	var elf_npc = $NPCs/ElfExplorer
+	add_npc(elf_npc, white_room)
+	#white_room.add_npc(npc_elf)
 	
-	
-	################################################
-	#### LOAD THE MAP
-	#DataScene.get_command_parser().change_room(first_room)
-	DataScene.get_visual_panel().build_zonemap()
+	var quest1 = $Quests/BoneQuest
+	elf_npc.add_quest(quest1)
 
 	
 	
 	
-
+func get_room(input:String) -> Node:
+	return $Rooms.get_node(input)
 	
+
+
+func add_npc(npc:Node, room:Node):
+	
+	npc.setup()
+	room.add_npc(npc)
+
+
+
 

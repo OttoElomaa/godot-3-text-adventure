@@ -8,4 +8,4 @@ type = 1
 item_name = "Cool Chest"
 item_id = "chest"
 description = "A simple wooden chest."
-items_string = "bread-loaf,venison"
+items_string = "bread-loaf,bread-loaf,venison"

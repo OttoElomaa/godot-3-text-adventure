@@ -17,23 +17,32 @@ func _ready():
 	hide_alt_panel()
 
 
-func build_zonemap():
+func build_zonemap(room:Node):
 	
-	$TopPanel/Margins/HBox/MapVbox/Center/ViewportCont/Viewport/ZoneMap.build_zonemap()
+	$TopPanel/Margins/HBox/MapVbox/Center/ViewportCont/Viewport/ZoneMap.build_zonemap(room)
 
 
-func change_room_icon():
+
+#### CALLED IN COMMANDPARSER'S CHANGE_ROOM?
+func change_room_icon(zone):
 	
 	var room_sprite = $TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport/RoomSprite
 	var encounter_sprite = $TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport/RoomSprite/EncounterSprite
+	var npc_sprite = $TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport/RoomSprite/NpcSprite
+	var background = $TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport/RoomSprite/Background
 	
 	encounter_sprite.hide()
+	npc_sprite.hide()
 	var room = DataScene.get_command_parser().current_room
 	
 	room_sprite.texture = room.room_icon
+	background.texture = zone.zone_background
 	
+	#### SHOW THE CORRECT ADDITIONAL SPRITE
 	if room.has_combat:
 		encounter_sprite.show()
+	if room.room_character != null:
+		npc_sprite.show()
 
 
 func display_alt_panel():
@@ -54,10 +63,30 @@ func hide_alt_panel():
 	bottom_panel.show()
 	
 
+
+func hide_other_alt_screens(screen:Node):
+
+	for view in $AltPanel.get_children():
+		
+		if view == screen:
+			view.show()
+		else:
+			view.hide()
+
+
+func display_inventory():
+	
+	var inventory_screen = $AltPanel/InventoryScreen
+	hide_other_alt_screens(inventory_screen)
+	inventory_screen.setup()
+	
+	
+	
+
 func display_help():
 
-	$AltPanel/DialogueScreen.hide()
-	$AltPanel/HelpPanel.show()
+	hide_other_alt_screens($AltPanel/HelpPanel)
+	
 	
 	var response = "Available commands \n"
 	response += "Don't type [], brackets are just for show here  \n"
@@ -80,8 +109,9 @@ func display_dialogue_screen(current_room):
 	
 	var npc = current_room.room_character
 	
-	$AltPanel/HelpPanel.hide()
-	$AltPanel/DialogueScreen.show()
+	#$AltPanel/HelpPanel.hide()
+	#$AltPanel/DialogueScreen.show()
+	hide_other_alt_screens($AltPanel/DialogueScreen)
 	
 	$AltPanel/DialogueScreen/HBox/CharacterVBox/CharNameLabel.text = npc.npc_name
 	$AltPanel/DialogueScreen/HBox/CharacterVBox/CharDescLabel.text = npc.npc_description

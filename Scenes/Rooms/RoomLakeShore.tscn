@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/room-icon-lakeside.png" type="Texture" id=2]
+
+[node name="RoomLakeShore" instance=ExtResource( 1 )]
+room_name = "a Lakeside"
+room_description = "The grassy shore of a forest lake."
+room_icon = ExtResource( 2 )
+
+[node name="RoomName" parent="Margins/Scroll/Rows" index="0"]
+text = "a Lakeside"
+
+[node name="RoomDescription" parent="Margins/Scroll/Rows" index="1"]
+margin_bottom = 104.0
+text = "The grassy shore of a forest lake."

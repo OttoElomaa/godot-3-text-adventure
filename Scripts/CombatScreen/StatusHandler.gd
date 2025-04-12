@@ -31,7 +31,7 @@ func setup():
 	
 	
 
-
+#### COUNT DOWN BY ONE TURN. NO OTHER EFFECT
 func play_counters_turn():
 	
 	for co in cooldown_counters:
@@ -39,7 +39,7 @@ func play_counters_turn():
 	for co in status_counters:
 		co.take_turn()
 
-	apply_status_visual()
+	
 	
 	
 
@@ -96,7 +96,7 @@ func remove_duplicate_counters(counter):
 		types_n_counters[effect] = cou
 
 
-
+"""
 func play_animations():
 	
 	$AnimationPlayer.playback_active = true
@@ -105,41 +105,71 @@ func play_animations():
 		
 		$StatusPoisonSprite.visible = true
 		$AnimationPlayer.play("StatusPoison")
-
+"""
 
 
 func apply_status_visual():
 	
-	#$AnimationPlayer.stop()
-	#$StatusPoisonSprite.visible = false
-	#status_text = ""
+	if not is_instance_valid(battler):
+		return
 	
 	var info_panel = battler.battler_info_panel
 	
 	#### GO through the STATUS LIST
 	for counter in status_counters:
-		
 		if is_instance_valid(counter):
 			
-			#### CHECK FOR every type of status
-			if counter.status_effect_str == "Poison":
-				
-				info_panel.add_status_and_duration(counter.skill.status_effect_str, counter.counter_turns)
-				print("IIIMMM POIUSONEEEEDDDDDDD")
-				
-				#### Check if MULTIPLE effects of same type at once >> Longest timer wins
+			var color = null
 			
+			var status_enum = counter.get_status_enum()
+			match counter.status_effect:
 				
+				status_enum.POISON:
+					color = Color.darkseagreen
+					info_panel.add_status_and_duration(counter.skill.status_effect_str, counter.counter_turns, color)
 				
+				status_enum.STUN:
+					color = Color.lightsalmon
+					info_panel.add_status_and_duration(counter.skill.status_effect_str, counter.counter_turns, color)
 				
-	#apply_poison(poison_counter)
+
 	
-	#play_animations()
+func apply_status_initial():
+	pass
 	
+	
+	
+func apply_status_at_turn_end():
+	
+	for counter in status_counters:
+		if is_instance_valid(counter):
+			
+			#### Check if MULTIPLE effects of same type at once >> Longest timer wins
+			var status_enum = counter.get_status_enum()
+			match counter.status_effect:
+				
+				status_enum.POISON:
+					var damage = counter.skill.status_amount
+					var text = "\n%s takes %d poison damage!" % [battler.entity_name, damage]
+					var color = Color.darkseagreen
+					
+					battler.deal_indirect_damage(battler, damage)
+					combat.handle_combat_output(text, color)
+					print("IIIMMM POIUSONEEEEDDDDDDD")
+					
 
 
 
-
-
-
+func check_is_stunned() -> bool:
+	
+	for counter in status_counters:
+		if is_instance_valid(counter):
+	
+			var status_enum = counter.get_status_enum()
+			match counter.status_effect:
+						
+				status_enum.STUN:
+					return true
+			
+	return false
 

@@ -9,6 +9,7 @@ var text_window = null
 
 onready var dialogue = $Dialogue
 onready var exploration = $Exploration
+onready var event_node = $Event
 
 
 var game_state = null
@@ -51,13 +52,16 @@ func setup(starting_room, player):
 	
 	self.player = player
 	current_room = starting_room
+	current_zone = game_root.current_zone
 	
-	exploration.setup(self)
+	for node in get_children():
+		if node.has_method("setup"):
+			node.setup(self)
 	
 	#change_room(current_room)
 	
 	var game_root = get_tree().root.get_node("GameRoot")
-	current_zone = game_root.get_node("Zone") 
+	
 	
 	game_state = Types.GameStates.EXPLORE
 	
@@ -69,19 +73,41 @@ func setup(starting_room, player):
 	
 ###################################################################################################	
 
-func split_word(input):
+func split_word(input: String):
 	
 	#### Delineator, allow_false, max split
 	var words = input.split(" ",false)
+	if words[0] in ["show","display"]:
+		words.remove(0)
+	
 	
 	#### ERROR
 	if words.size() == 0:
 		return "Deez nuts"
+		
+	#### PARSE FIRST WORD
 	first_word = words[0].to_lower()
+	words = split_multi_word_help(words)
 	
+	#### PARSE SECOND
 	if words.size() >= 2:
 		second_word = words[1].to_lower()
 
+
+
+func split_multi_word_help(words: Array) -> Array:
+	#### FOR DEALING WITH 3+ WORDS
+	#if words.size() <= 2:
+		#return words
+	
+	
+	
+	for i in range(words.size() - 1):
+		if words[i] in ["up","in","on","to",
+		"from","the","a"]:
+			words.remove(i)
+
+	return words
 
 
 func process_command( input:String ) -> String:
@@ -92,6 +118,9 @@ func process_command( input:String ) -> String:
 	first_word = ""
 	second_word = ""
 	
+	split_word(input)
+	
+	#### PROCEED USING THE CORRECT INPUT STATE
 	match game_state:
 		
 		Types.GameStates.EXPLORE:
@@ -108,7 +137,7 @@ func process_command( input:String ) -> String:
 			
 		Types.GameStates.EVENT:
 			
-			response = process_command_event(input)
+			response = event_node.process_command_event(input)
 			
 	return response
 		
@@ -122,43 +151,7 @@ func process_command_combat(input):
 
 	
 
-func process_command_event(input):
-	
-	split_word(input)
-	match input:
-		
-		"fight", "f":
-			return fight()
-			
-		"run", "retreat", "r":
-			return retreat(input)
-	
-	return "You're in an Event! Your actions have been restricted!"
 
-
-
-
-func fight():
-	
-	var combat_screen = DataScene.get_combat_screen()
-	
-	if current_room.has_combat:
-		
-		game_root.display_combat_screen()
-		game_state = Types.GameStates.COMBAT
-		combat_screen.setup_and_fight(current_room)
-		
-		return "Combat initiated!"
-		
-	else:
-		return "No combat encounter in this room!"
-
-
-func retreat(input):
-	
-	text_window.create_custom_row(input, "You run back to %s!" % previous_room.room_name)
-	game_state = Types.GameStates.EXPLORE
-	return change_room(previous_room)
 
 
 
@@ -191,7 +184,7 @@ func look_for_item_in_list(item_list, item_id: String) -> Node:
 	if item_id in nums:
 			
 		var num = int(second_word)
-		if item_list.size() >= num - 1:
+		if item_list.size() >= num:
 			item = item_list[num - 1]
 	
 	#### Get ITEM by BROWSING the list (inventory etc)		
@@ -214,8 +207,9 @@ func change_room(new_room) -> String:
 	#### 1: CHANGE ZONE here too? Alternate to normal: call change_room on new zone's room	
 	if new_room.type == Types.RoomTypes.ZONE_SWITCH:
 		
-		var new_zone = game_root.get_node(new_room.switch_to_zone)
-		var new_start_room = new_zone.get_node(new_room.switch_to_room)
+		#### GET ZONE -FUNCTION
+		var new_zone = game_root.get_zone(new_room.switch_to_zone)
+		var new_start_room = new_zone.get_room(new_room.switch_to_room)
 		
 		var switch_message = "You travel from %s to %s!" % [current_zone.zone_name, new_zone.zone_name]
 		text_window.handle_adding_message(switch_message, Color.lightgreen)
@@ -236,6 +230,8 @@ func change_room(new_room) -> String:
 func change_room_two(new_room):
 	
 	
+	forget_current_container()
+	
 	#### SAVE PREV ROOM FOR RETREATING
 	previous_room = current_room
 	
@@ -246,8 +242,8 @@ func change_room_two(new_room):
 	var visual_panel = DataScene.get_visual_panel()
 	visual_panel.set_room_label(current_room.room_name)
 	visual_panel.set_zone_label("in " + zone.zone_name)
-	visual_panel.build_zonemap()
-	visual_panel.change_room_icon()
+	visual_panel.build_zonemap(current_room)
+	visual_panel.change_room_icon(zone)
 	
 	
 	var items_list = current_room.get_items()
@@ -274,6 +270,11 @@ func change_room_two(new_room):
 		text_window.handle_adding_message(encounter_text, Color.lightcoral)
 
 
+
+func debug_go_to_zone_and_room(zone:Node, room:Node):
+	
+	current_zone = zone
+	change_room(room)
 
 
 

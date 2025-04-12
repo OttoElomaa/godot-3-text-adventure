@@ -36,6 +36,6 @@ margin_bottom = 79.0
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 1
+custom_constants/separation = 5
 
 [connection signal="mouse_entered" from="." to="." method="_on_ScrollRowsPanel_mouse_entered"]

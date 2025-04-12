@@ -2,7 +2,6 @@ extends Control
 
 
 var starting_room = null
-#get_node("ZoneHandler/Zone/Room")
 var current_zone = null
 var current_room = null
 
@@ -11,21 +10,26 @@ onready var command_parser = $CommandParser
 onready var text_window = $MainPanel/MarginContainer/Horizontal/TextWindow
 
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	
 	
 	yield(get_tree().create_timer(0.1), "timeout")
 	
-	current_zone = $Zone
-	starting_room = current_zone.first_room
+	for zone in $Zones.get_children():
+		zone.setup()
+	
+	current_zone = $Zones/Zone
+	#current_zone = $Zones/HamletZone
 	#### JUST TO DEBUG: GO TO DIFF ROOM
 	#starting_room = current_zone.antechamber
+	starting_room = current_zone.first_room
+	
 	
 	command_parser.setup(starting_room, $Inventory)
 	
 	
-	current_zone.setup()	
+	#current_zone.setup()	
 	
 	#### Get ZONE, child of zone HANDLER -> not anymore bucko
 	#### I reckoned, Zone is just abstraction of some Rooms -> same as ZoneHandler would be
@@ -37,6 +41,11 @@ func _ready():
 	#### Custom SETUP functions
 	text_window.setup()
 	text_window.start_game( starting_room )
+	
+
+func get_zone(name:String) -> Node:
+	
+	return $Zones.get_node(name)
 	
 	
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scenes/Room.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Zone.gd" type="Script" id=2]
@@ -14,9 +14,14 @@
 [ext_resource path="res://Scenes/CombatScreen/Battler.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Resources/Enemies/GhostHealer.tres" type="Resource" id=13]
 [ext_resource path="res://Resources/Enemies/Rat.tres" type="Resource" id=14]
+[ext_resource path="res://ScenesMisc/QuestScene.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Resources/Quests/ElfBoneQuest.tres" type="Resource" id=16]
+[ext_resource path="res://ScenesMisc/NpcScene.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Resources/NPCs/ElfExplorer.tres" type="Resource" id=18]
 
 [node name="Zone" type="Control"]
 script = ExtResource( 2 )
+zone_id = "001"
 zone_name = "Mysterious House"
 
 [node name="Rooms" type="Control" parent="."]
@@ -116,3 +121,17 @@ battler_resource = ExtResource( 13 )
 
 [node name="rat" parent="Encounters/GhostsEnc1/Enemies" instance=ExtResource( 12 )]
 battler_resource = ExtResource( 14 )
+
+[node name="Quests" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="BoneQuest" parent="Quests" instance=ExtResource( 15 )]
+resource = ExtResource( 16 )
+
+[node name="NPCs" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ElfExplorer" parent="NPCs" instance=ExtResource( 17 )]
+npc_resource = ExtResource( 18 )

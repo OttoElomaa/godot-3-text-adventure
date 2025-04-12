@@ -29,8 +29,8 @@ func _ready():
 func setup(resource):
 	
 	give_properties(resource)
-	
-	call_deferred("get_items_from_list")
+	get_items_from_list()
+	#call_deferred("get_items_from_list")
 
 
 
@@ -53,23 +53,22 @@ func get_items_from_list():
 	
 	
 	#### GET LIST OF ALL ITEMS
-	var root = DataScene.get_game_root()
-	var items = root.get_node("FileReader").read_items_file_to_list()
+	#var root = DataScene.get_game_root()
+	var items = DataScene.get_all_items()
 	
 	#### GET MY ITEMS (IN CHEST)
 	var my_items = items_string
 	if my_items == "":
-		return	
-		
+		return		
 	var strings = my_items.split(",")
-	
 	
 	#### MATCH THEM TOGETHER
 	for stri in strings:
 		for item in items:
 			
 			if stri == item.item_id:
-				self.add_child(item)
+				var new_item = DataScene.get_file_reader().create_new_item(item)
+				self.add_child(new_item)
 
 
 func remove_item(item):

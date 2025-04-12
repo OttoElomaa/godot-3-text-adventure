@@ -1,12 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://ScenesMisc/MiscUI/VisualPanelSprite.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scripts/VisualPanel.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/VisualPanel/VisualPanel.gd" type="Script" id=2]
 [ext_resource path="res://BackgroundResources/TextWindowStyle.tres" type="StyleBox" id=3]
 [ext_resource path="res://Fonts/MainFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://ScenesMisc/MiscUI/ZoneMap.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/DialogueScreen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ScenesMisc/InventoryScreen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ScenesMisc/QuestLogScreen.tscn" type="PackedScene" id=9]
 
 [node name="VisualPanel" type="VBoxContainer"]
 margin_left = 502.0
@@ -17,6 +19,7 @@ custom_constants/separation = 15
 script = ExtResource( 2 )
 
 [node name="TopPanel" type="PanelContainer" parent="."]
+visible = false
 margin_right = 630.0
 margin_bottom = 356.0
 size_flags_vertical = 3
@@ -66,7 +69,7 @@ size_flags_vertical = 3
 size = Vector2( 300, 300 )
 handle_input_locally = false
 disable_3d = true
-render_target_update_mode = 3
+render_target_update_mode = 0
 gui_disable_input = true
 
 [node name="RoomSprite" parent="TopPanel/Margins/HBox/ArtVBox/Center/ViewportCont/Viewport" instance=ExtResource( 1 )]
@@ -101,21 +104,22 @@ size_flags_vertical = 3
 size = Vector2( 300, 300 )
 handle_input_locally = false
 disable_3d = true
-render_target_update_mode = 3
+render_target_update_mode = 0
 gui_disable_input = true
 
 [node name="ZoneMap" parent="TopPanel/Margins/HBox/MapVbox/Center/ViewportCont/Viewport" instance=ExtResource( 6 )]
 
 [node name="BottomPanel" type="PanelContainer" parent="."]
+visible = false
 margin_top = 371.0
 margin_right = 630.0
-margin_bottom = 560.0
+margin_bottom = 391.0
 size_flags_vertical = 3
 custom_styles/panel = ExtResource( 3 )
 
 [node name="Margins" type="MarginContainer" parent="BottomPanel"]
 margin_right = 630.0
-margin_bottom = 189.0
+margin_bottom = 20.0
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
@@ -125,39 +129,45 @@ custom_constants/margin_bottom = 5
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 625.0
-margin_bottom = 184.0
+margin_bottom = 15.0
 custom_constants/separation = 20
 
 [node name="ExitsRows" parent="BottomPanel/Margins/HBox" instance=ExtResource( 5 )]
 margin_right = 300.0
-margin_bottom = 179.0
+margin_bottom = 10.0
 
 [node name="ItemsRows" parent="BottomPanel/Margins/HBox" instance=ExtResource( 5 )]
 margin_left = 320.0
 margin_right = 620.0
-margin_bottom = 179.0
+margin_bottom = 10.0
 
 [node name="AltPanel" type="PanelContainer" parent="."]
-visible = false
-margin_top = 371.0
-margin_right = 630.0
-margin_bottom = 733.0
+margin_right = 482.0
+margin_bottom = 560.0
 size_flags_vertical = 3
 custom_styles/panel = ExtResource( 3 )
 
 [node name="HelpPanel" type="PanelContainer" parent="AltPanel"]
 visible = false
-margin_right = 618.0
+margin_right = 482.0
 margin_bottom = 560.0
+custom_styles/panel = ExtResource( 3 )
 
 [node name="Margins" type="MarginContainer" parent="AltPanel/HelpPanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 611.0
-margin_bottom = 553.0
+margin_right = 482.0
+margin_bottom = 560.0
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
 
+[node name="InventoryScreen" parent="AltPanel" instance=ExtResource( 8 )]
+visible = false
+margin_right = 630.0
+
 [node name="DialogueScreen" parent="AltPanel" instance=ExtResource( 7 )]
+visible = false
+margin_right = 504.0
+margin_bottom = 560.0
+
+[node name="QuestLogScreen" parent="AltPanel" instance=ExtResource( 9 )]

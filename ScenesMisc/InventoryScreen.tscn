@@ -1,0 +1,120 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://BackgroundResources/TextWindowStyle.tres" type="StyleBox" id=1]
+[ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BackgroundResources/MainDarkBackground.tres" type="StyleBox" id=3]
+[ext_resource path="res://Scripts/VisualPanel/InventoryScreen.gd" type="Script" id=4]
+[ext_resource path="res://Sprites/equipment-doll-temp.png" type="Texture" id=5]
+[ext_resource path="res://Fonts/LightFont.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Fonts/SmallFont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Sprites/knight-32px.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/VisualPanel/ItemInfoPanel.gd" type="Script" id=10]
+
+[node name="InventoryScreen" type="PanelContainer"]
+margin_right = 482.0
+margin_bottom = 560.0
+custom_styles/panel = ExtResource( 3 )
+script = ExtResource( 4 )
+
+[node name="Margins" type="MarginContainer" parent="."]
+margin_right = 630.0
+margin_bottom = 560.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="Margins"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 625.0
+margin_bottom = 555.0
+custom_constants/separation = 15
+
+[node name="EquipmentHBox" type="HBoxContainer" parent="Margins/VBox"]
+margin_right = 620.0
+margin_bottom = 300.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Margins/VBox/EquipmentHBox"]
+margin_right = 308.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 200, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="Margins/VBox/EquipmentHBox/PanelContainer"]
+margin_right = 308.0
+margin_bottom = 300.0
+texture = ExtResource( 5 )
+
+[node name="EquipRows" parent="Margins/VBox/EquipmentHBox" instance=ExtResource( 2 )]
+margin_left = 312.0
+margin_right = 620.0
+margin_bottom = 300.0
+
+[node name="ItemsTopLegend" type="PanelContainer" parent="Margins/VBox"]
+margin_top = 315.0
+margin_right = 620.0
+margin_bottom = 361.0
+rect_min_size = Vector2( 0, 30 )
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Margins/VBox/ItemsTopLegend"]
+margin_right = 620.0
+margin_bottom = 46.0
+
+[node name="HBox" type="HBoxContainer" parent="Margins/VBox/ItemsTopLegend/MarginContainer"]
+margin_right = 620.0
+margin_bottom = 46.0
+custom_constants/separation = 20
+
+[node name="ItemIcon" type="TextureRect" parent="Margins/VBox/ItemsTopLegend/MarginContainer/HBox"]
+margin_right = 40.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 40, 0 )
+texture = ExtResource( 9 )
+
+[node name="NameVBox" type="VBoxContainer" parent="Margins/VBox/ItemsTopLegend/MarginContainer/HBox"]
+margin_left = 60.0
+margin_right = 260.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 200, 0 )
+custom_constants/separation = 0
+
+[node name="NameLabel" type="Label" parent="Margins/VBox/ItemsTopLegend/MarginContainer/HBox/NameVBox"]
+margin_right = 200.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 6 )
+text = "Item Name"
+
+[node name="IdLabel" type="Label" parent="Margins/VBox/ItemsTopLegend/MarginContainer/HBox/NameVBox"]
+margin_top = 27.0
+margin_right = 200.0
+margin_bottom = 46.0
+custom_fonts/font = ExtResource( 8 )
+text = "Item ID"
+
+[node name="DescriptionLabel" type="Label" parent="Margins/VBox/ItemsTopLegend/MarginContainer/HBox"]
+margin_left = 280.0
+margin_top = 9.0
+margin_right = 480.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 200, 0 )
+custom_fonts/font = ExtResource( 6 )
+text = "Description"
+autowrap = true
+
+[node name="SellPriceLabel" type="Label" parent="Margins/VBox/ItemsTopLegend/MarginContainer/HBox"]
+margin_left = 500.0
+margin_top = 9.0
+margin_right = 620.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 6 )
+text = "Sell Price"
+
+[node name="ItemsRows" parent="Margins/VBox" instance=ExtResource( 2 )]
+margin_top = 376.0
+margin_right = 620.0
+margin_bottom = 550.0

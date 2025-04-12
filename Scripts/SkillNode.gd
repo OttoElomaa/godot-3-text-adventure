@@ -19,14 +19,15 @@ var healing := 0
 
 var cooldown := 0
 
-var combat = null
-var battler = null
+var combat: Node = null
+var battler: Node = null
 
 var target_group = null
-var target = null
+var target: Node = null
 
 var has_status_effect = null
-var status_duration = null
+var status_duration := 0
+var status_amount := 0
 
 var status_effect = null	
 var status_effect_str := ""
@@ -59,6 +60,7 @@ func setup(resource):
 	
 	has_status_effect = resource.has_status_effect
 	status_duration = resource.status_duration
+	status_amount = resource.status_amount
 	
 	status_effect = resource.status_effect
 	status_effect_str = resource.status_effect_str

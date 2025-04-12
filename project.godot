@@ -79,11 +79,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/beehave/nodes/decorators/inverter.gd"
 }, {
-"base": "Resource",
-"class": "Item",
-"language": "GDScript",
-"path": "res://Resources/Item.gd"
-}, {
 "base": "Node",
 "class": "ItemContainer",
 "language": "GDScript",
@@ -102,7 +97,7 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "NPC",
 "language": "GDScript",
-"path": "res://Resources/NPCs/NPC.gd"
+"path": "res://Resources/NPCs/BaseNPC.gd"
 }, {
 "base": "Composite",
 "class": "SelectorComposite",
@@ -144,7 +139,6 @@ _global_script_class_icons={
 "Exit": "",
 "GameRoom": "",
 "InverterDecorator": "res://addons/beehave/icons/inverter.svg",
-"Item": "",
 "ItemContainer": "",
 "Leaf": "res://addons/beehave/icons/action.svg",
 "LimiterDecorator": "res://addons/beehave/icons/limiter.svg",

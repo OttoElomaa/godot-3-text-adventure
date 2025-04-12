@@ -13,4 +13,4 @@ func get_enemies():
 	
 	
 func get_texture():
-	return $Texture
+	return background_texture

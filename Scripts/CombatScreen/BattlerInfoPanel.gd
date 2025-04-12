@@ -36,13 +36,11 @@ func update_resource_bars():
 	
 	$VBox/StatusRows.wipe_history()
 	var count = 0
-	for skill in battler.get_skills():
-		count = battler.get_cooldown_duration(skill)
-		if count != 0:	
-			add_status_and_duration(skill.skill_name, count)
+	#for skill in battler.get_skills():
+		#count = battler.get_cooldown_duration(skill)
+		#if count != 0:	
+			#add_status_and_duration(skill.skill_name, count)
 	
-	battler.status_handler.apply_status_visual()
-		#pass
 	
 	#### HEALTH bar
 	health = battler.stats.health
@@ -62,12 +60,12 @@ func update_resource_bars():
 	
 
 
-func add_status_and_duration(text: String, duration: int):
+func add_status_and_duration(text: String, duration: int, color: Color):
 	
-	var color = Color.aqua
+	#var color = Color.aqua
 	
-	if text == "Poison":
-		color = Color.darkseagreen
+	#if text == "Poison":
+		#color = Color.darkseagreen
 	
 	$VBox/StatusRows.handle_adding_mini_message("%s: %d" % [text, duration], color)
 

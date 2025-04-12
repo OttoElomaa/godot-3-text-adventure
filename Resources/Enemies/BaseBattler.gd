@@ -7,7 +7,7 @@ enum MobTypes {
 
 enum MobSubTypes {
 	
-	None, Healer, Vermin, Druid
+	None, Healer, Vermin, Druid, Reaver
 }
 
 export (Resource) var sprite = load("res://Sprites/14b.png")

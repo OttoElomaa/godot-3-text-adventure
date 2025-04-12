@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/VisualPanel/QuestLogScreen.gd" type="Script" id=2]
+[ext_resource path="res://BackgroundResources/MainDarkBackground.tres" type="StyleBox" id=3]
+[ext_resource path="res://ScenesMisc/ScrollRowsPanel.tscn" type="PackedScene" id=4]
+
+[node name="QuestLogScreen" type="PanelContainer"]
+margin_right = 482.0
+margin_bottom = 560.0
+custom_styles/panel = ExtResource( 3 )
+script = ExtResource( 2 )
+
+[node name="Margin" type="MarginContainer" parent="."]
+margin_right = 482.0
+margin_bottom = 560.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="QuestRows" parent="Margin" instance=ExtResource( 4 )]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 472.0
+margin_bottom = 550.0
+size_flags_horizontal = 1

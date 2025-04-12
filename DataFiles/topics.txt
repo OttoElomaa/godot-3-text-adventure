@@ -1,0 +1,29 @@
+# comment. each entry has topic_id, keyword, and topic text, and the linked topics
+
+####
+
+*house01
+*house
+*Never seen anything like it. Is it abandoned? Are there ghosts? Say, I'm from the Hamlet. Are you from the Hamlet?
+*hamlet01
+
+####
+
+*hamlet01
+*hamlet
+*This is the Hamlet of Oaktown. It's a peaceful place, close to the City, protected by the Queen's grace.
+*city01, queen01
+
+####
+
+*city01
+*city
+*The City is the jewel of the East. It's where the Silent Queen rules.
+*east01
+
+####
+
+*queen01
+*queen
+*The Silent Queen watches over us all. She knows everything.
+*east01

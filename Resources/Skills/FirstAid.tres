@@ -16,3 +16,4 @@ has_status_effect = false
 status_effect = 0
 status_effect_str = "StatusEffect"
 status_duration = 0
+status_amount = 0

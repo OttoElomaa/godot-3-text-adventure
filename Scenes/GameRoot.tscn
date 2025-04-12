@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/TextWindow.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/VisualPanel.tscn" type="PackedScene" id=2]
@@ -13,6 +13,10 @@
 [ext_resource path="res://Resources/Enemies/Dog.tres" type="Resource" id=11]
 [ext_resource path="res://ScenesMisc/FileReader.tscn" type="PackedScene" id=12]
 [ext_resource path="res://BackgroundResources/MainDarkBackground.tres" type="StyleBox" id=13]
+[ext_resource path="res://Sprites/zonemap-room-icon-32px.png" type="Texture" id=14]
+[ext_resource path="res://Sprites/zonemap-room-icon-hamlet.png" type="Texture" id=15]
+[ext_resource path="res://Sprites/room-icon-background-v2.png" type="Texture" id=16]
+[ext_resource path="res://Sprites/room-icon-background-v2-hamlet.png" type="Texture" id=17]
 
 [node name="GameRoot" type="Control"]
 anchor_right = 1.0
@@ -34,21 +38,29 @@ entity_name = "Dog"
 battler_resource = ExtResource( 10 )
 entity_name = "PlayerGuy"
 
-[node name="Zone" parent="." instance=ExtResource( 5 )]
+[node name="Zones" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Zone" parent="Zones" instance=ExtResource( 5 )]
 anchor_left = -0.059
 anchor_top = -1.09
 anchor_right = -0.059
 anchor_bottom = -1.09
-margin_left = 176.7
-margin_top = -1328.0
-margin_right = 176.7
-margin_bottom = -1328.0
+margin_left = 102.36
+margin_top = -2156.4
+margin_right = 102.36
+margin_bottom = -2156.4
+zone_background = ExtResource( 16 )
+zone_map_room_icon = ExtResource( 14 )
 
-[node name="HamletZone" parent="." instance=ExtResource( 7 )]
+[node name="HamletZone" parent="Zones" instance=ExtResource( 7 )]
 margin_left = 3000.0
 margin_top = -1500.0
 margin_right = 3000.0
 margin_bottom = -1500.0
+zone_background = ExtResource( 17 )
+zone_map_room_icon = ExtResource( 15 )
 
 [node name="MainPanel" type="PanelContainer" parent="."]
 anchor_right = 1.0
@@ -71,11 +83,11 @@ margin_bottom = 780.0
 custom_constants/separation = 20
 
 [node name="TextWindow" parent="MainPanel/MarginContainer/Horizontal" instance=ExtResource( 1 )]
-margin_right = 610.0
+margin_right = 620.0
 margin_bottom = 760.0
 
 [node name="VisualPanel" parent="MainPanel/MarginContainer/Horizontal" instance=ExtResource( 2 )]
-margin_left = 630.0
+margin_left = 640.0
 margin_right = 1260.0
 margin_bottom = 760.0
 
